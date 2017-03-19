@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "918037844433",
+    "firebase_url": "https://greenthumb-65a56.firebaseio.com",
+    "project_id": "greenthumb-65a56",
+    "storage_bucket": "greenthumb-65a56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918037844433:android:010183cda2ddbbc1",
+        "android_client_info": {
+          "package_name": "pervasive.iu.com.greenthumb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918037844433-2iujjp72u606r7jl5um6b2lkjuv0e40g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDK1g8j3XmdDMNMdIdjMrdbu_RvTN0TkqI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918037844433-2iujjp72u606r7jl5um6b2lkjuv0e40g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
