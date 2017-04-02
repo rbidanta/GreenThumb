@@ -1,4 +1,4 @@
-package pervasive.iu.com.greenthumb.Login;
+package pervasive.iu.com.greenthumb;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,7 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import pervasive.iu.com.greenthumb.R;
+import pervasive.iu.com.greenthumb.Login.LoginActivity;
+import pervasive.iu.com.greenthumb.Login.Profile;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private Button register_button;
