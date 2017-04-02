@@ -1,4 +1,4 @@
-package pervasive.iu.com.greenthumb;
+package pervasive.iu.com.greenthumb.DBHandler;
 
 /**
  * Created by deepakasinathan on 3/19/17.
