@@ -1,4 +1,4 @@
-package pervasive.iu.com.greenthumb;
+package pervasive.iu.com.greenthumb.Login;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +13,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import pervasive.iu.com.greenthumb.DBHandler.saveInfo;
+import pervasive.iu.com.greenthumb.R;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener{
 

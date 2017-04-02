@@ -1,4 +1,4 @@
-package pervasive.iu.com.greenthumb;
+package pervasive.iu.com.greenthumb.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import pervasive.iu.com.greenthumb.DBHandler.saveInfo;
+import pervasive.iu.com.greenthumb.R;
 
 /**
  * Created by deepakasinathan on 3/25/17.
