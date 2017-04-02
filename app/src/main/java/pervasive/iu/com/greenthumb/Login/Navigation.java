@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import pervasive.iu.com.greenthumb.GardenPartner.my_garden;
 import pervasive.iu.com.greenthumb.R;
 
 public class Navigation extends AppCompatActivity
