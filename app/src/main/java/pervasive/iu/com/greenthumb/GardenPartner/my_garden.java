@@ -1,4 +1,4 @@
-package pervasive.iu.com.greenthumb.Login;
+package pervasive.iu.com.greenthumb.GardenPartner;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
