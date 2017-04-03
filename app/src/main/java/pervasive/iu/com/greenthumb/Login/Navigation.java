@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import pervasive.iu.com.greenthumb.GardenPartner.my_garden;
+import pervasive.iu.com.greenthumb.GardenPartner.GardenPartner;
 import pervasive.iu.com.greenthumb.R;
 
 public class Navigation extends AppCompatActivity
@@ -99,7 +99,7 @@ public class Navigation extends AppCompatActivity
                 fragment=new plant();
                 break;
             case R.id.garden_partner:
-                fragment=new my_garden();
+                fragment=new GardenPartner();
                 break;
             case R.id.profile:
                 fragment=new my_profile();

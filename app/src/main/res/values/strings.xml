@@ -19,4 +19,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="garden_name">Name</string>
+    <string name="add_garden_hint">Name Your Garden</string>
+    <string name="garden_address">Address</string>
+    <string name="address_hint">Provide Garden Address</string>
 </resources>
