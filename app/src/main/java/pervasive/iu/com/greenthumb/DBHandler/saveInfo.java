@@ -10,6 +10,7 @@ public class saveInfo {
     public String address;
     public String location;
     public String phone;
+
     public saveInfo()
     {
 
@@ -20,6 +21,46 @@ public class saveInfo {
         this.lastname = lastname;
         this.address = address;
         this.location = location;
+        this.phone = phone;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 }

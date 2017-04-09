@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "918037844433",
-    "firebase_url": "https://greenthumb-65a56.firebaseio.com",
-    "project_id": "greenthumb-65a56",
-    "storage_bucket": "greenthumb-65a56.appspot.com"
+    "project_number": "885915745719",
+    "firebase_url": "https://greenthumb-ed5a9.firebaseio.com",
+    "project_id": "greenthumb-ed5a9",
+    "storage_bucket": "greenthumb-ed5a9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:918037844433:android:010183cda2ddbbc1",
+        "mobilesdk_app_id": "1:885915745719:android:010183cda2ddbbc1",
         "android_client_info": {
           "package_name": "pervasive.iu.com.greenthumb"
         }
       },
       "oauth_client": [
         {
-          "client_id": "918037844433-2iujjp72u606r7jl5um6b2lkjuv0e40g.apps.googleusercontent.com",
+          "client_id": "885915745719-9c1dt8n5bum2v450qrj6k4ojt2oqjgsu.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDK1g8j3XmdDMNMdIdjMrdbu_RvTN0TkqI"
+          "current_key": "AIzaSyBHzzlY0y1zCx5jQEl73xyMhcs0zIUsxt4"
         }
       ],
       "services": {
@@ -29,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "918037844433-2iujjp72u606r7jl5um6b2lkjuv0e40g.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

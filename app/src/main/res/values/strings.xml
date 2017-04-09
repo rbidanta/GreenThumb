@@ -19,4 +19,16 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- Strings related to Garden Partner-->
+
+    <string name="garden_name">Name</string>
+    <string name="add_garden_hint">Name Your Garden</string>
+    <string name="garden_address">Address</string>
+    <string name="address_hint">Provide Garden Address</string>
+    <string name="garden_image">Capture Image Of Your Garden</string>
+    <string name="err_msg_gname">Enter your Garden Name</string>
+    <string name="err_msg_address">Enter valid address of your Garden</string>
+    <string name="err_msg_noGImage">Please take a picture of your Garden</string>
+    <string name="galbum_name">GardenAlbum</string>
 </resources>
