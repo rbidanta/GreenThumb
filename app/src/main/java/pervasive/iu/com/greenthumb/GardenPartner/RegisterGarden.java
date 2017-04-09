@@ -183,7 +183,7 @@ public class RegisterGarden extends AppCompatActivity {
     }
 
     private boolean validategImage() {
-        
+
 
         if (gardenImageUri == null) {
             return false;

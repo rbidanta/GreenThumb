@@ -5,13 +5,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,23 +53,6 @@ public class GardenPartner extends Fragment{
 
         lv = (ListView) view.findViewById(R.id.gardenlist);
 
-        // Instanciating an array list (you don't need to do this,
-        // you already have yours).
-
-        /*gardenList.add("Community 1");
-        gardenList.add("Community 2");
-        gardenList.add("Community 3");
-        gardenList.add("Community 4");*/
-
-
-
-
-
-        // This is the array adapter, it takes the context of the activity as a
-        // first parameter, the type of list view as a second parameter and your
-        // array as a third parameter.
-
-
     }
 
     @Nullable
@@ -83,6 +69,8 @@ public class GardenPartner extends Fragment{
                 startActivity(new Intent(getActivity(), RegisterGarden.class));
             }
         });
+
+
 
         return view;
     }
@@ -116,6 +104,36 @@ public class GardenPartner extends Fragment{
                 lv.setAdapter(arrayAdapter);
 
 
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                        String name = (String) parent.getItemAtPosition(position);
+
+                        /*Intent gardenOverviewIntent = new Intent(getActivity(), GardenOverview.class);
+
+                        gardenOverviewIntent.putExtra("gardenName", name);
+
+
+                        startActivity(gardenOverviewIntent);*/
+
+
+                        Fragment frag = new GardenOverview();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("gardenName",name);
+                        frag.setArguments(bundle);
+
+                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                        transaction.replace(R.id.content_navigation, frag ); // give your fragment container id in first parameter
+                        transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                        transaction.commit();
+
+                    }
+                });
+
+
             }
 
             @Override
@@ -128,6 +146,9 @@ public class GardenPartner extends Fragment{
 
 
     }
+
+
+
 
     @Override
     public void onOptionsMenuClosed(Menu menu) {
