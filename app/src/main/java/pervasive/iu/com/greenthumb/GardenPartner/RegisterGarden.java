@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
@@ -20,6 +21,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +30,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -46,18 +53,20 @@ public class RegisterGarden extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference dbreference;
     private DatabaseReference userReference ;
+    // Create a storage reference from our app
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference gardenStorageRef = storage.getReference("gardens");
+    private StorageReference gardenImagesRef;
+
     private EditText gardenName, gardenAddress;
     private TextInputLayout inputLayoutgName, inputLayoutgAddress;
     private saveInfo loggedInUserInfo = new saveInfo();
 
-    private static final int ACTION_TAKE_PHOTO_B = 1;
-    private static final int ACTION_TAKE_PHOTO_S = 2;
-    private static final int ACTION_TAKE_VIDEO = 3;
 
-    private static final String BITMAP_STORAGE_KEY = "viewbitmap";
-    private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
     private ImageView mImageView;
-    private Bitmap mImageBitmap;
+
+    private Uri gardenImageUri = null;
+
 
     private String mCurrentPhotoPath;
 
@@ -80,10 +89,12 @@ public class RegisterGarden extends AppCompatActivity {
         inputLayoutgName = (TextInputLayout) findViewById(R.id.input_layout_gname);
         inputLayoutgAddress = (TextInputLayout) findViewById(R.id.input_layout_gaddress);
 
+
+
         mImageView = (ImageView) findViewById(R.id.gardenImage);
         mImageView.setVisibility(View.INVISIBLE);
 
-        mImageBitmap = null;
+
 
         final String usrId = firebaseAuth.getCurrentUser().getUid();
 
@@ -131,6 +142,12 @@ public class RegisterGarden extends AppCompatActivity {
             return;
         }
 
+        if(!validategImage()){
+            Toast.makeText(this,R.string.err_msg_noGImage,Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
         saveGardenInfo();
 
         Toast.makeText(this,"Garden information saved successfully",Toast.LENGTH_LONG).show();
@@ -165,6 +182,17 @@ public class RegisterGarden extends AppCompatActivity {
         return true;
     }
 
+    private boolean validategImage() {
+        
+
+        if (gardenImageUri == null) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -176,21 +204,23 @@ public class RegisterGarden extends AppCompatActivity {
         String gardenname = gardenName.getText().toString().trim();
         String gardenaddress = gardenAddress.getText().toString().trim();
 
-        //saveInfo saveinf=new saveInfo(gardenname,gardenaddress);
         dbreference = FirebaseDatabase.getInstance().getReference("gardens");
         FirebaseUser user=firebaseAuth.getCurrentUser();
 
         String gId = dbreference.push().getKey();
-
-        GardenInfo gInfo = new GardenInfo(gId, gardenname, gardenaddress, user.getUid(), loggedInUserInfo.getPhone(), null);
+        gardenImagesRef = gardenStorageRef.child(gId+"/"+gardenname.replaceAll(" ","")+".jpg");
+        System.out.println("Image Path on User Machine:"+gardenImageUri.getPath());
+        GardenInfo gInfo = new GardenInfo(gId, gardenname, gardenaddress, user.getUid(), loggedInUserInfo.getPhone(), null,gardenImageUri.getPath(),gardenImagesRef.getPath());
 
         dbreference.child(gId).setValue(gInfo);
 
         dbreference.child(gId).child("gMembers").child("User1").setValue(true);
         dbreference.child(gId).child("gMembers").child("User2").setValue(true);
         dbreference.child(gId).child("gMembers").child("User3").setValue(true);
-        //Toast.makeText(getActivity(),"User information saved successfully",Toast.LENGTH_LONG).show();
 
+
+        //Storing Image on Firebase
+        putImagetoFireBase();
 
     }
 
@@ -350,6 +380,7 @@ public class RegisterGarden extends AppCompatActivity {
         Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
         File f = new File(mCurrentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
+        gardenImageUri = contentUri;
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
@@ -374,6 +405,30 @@ public class RegisterGarden extends AppCompatActivity {
             handleBigCameraPhoto();
         }
 
+    }
+
+
+    private void putImagetoFireBase(){
+        mImageView.setDrawingCacheEnabled(true);
+        mImageView.buildDrawingCache();
+        Bitmap bitmap = mImageView.getDrawingCache();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBdata = baos.toByteArray();
+
+        UploadTask uploadTask = gardenImagesRef.putBytes(imageBdata);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        });
     }
 
 

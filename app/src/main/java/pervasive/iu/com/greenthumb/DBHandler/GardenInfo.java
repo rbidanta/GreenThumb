@@ -15,18 +15,22 @@ public class GardenInfo {
     public String gOwnerPhone;
     //public String gMembers;
     public List<String> gMembers;
+    public String gImagePath;
+    public String gFireBasePath;
 
     public GardenInfo() {
         // Default constructor required for calls to DataSnapshot.getValue(GardenInfo.class)
     }
 
-    public GardenInfo(String gId, String gName, String gAddress,String gOwner, String gOwnerPhone, List<String> gMembers) {
+    public GardenInfo(String gId, String gName, String gAddress,String gOwner, String gOwnerPhone, List<String> gMembers, String gImagePath,String gFireBasePath) {
         this.gId = gId;
         this.gName = gName;
         this.gAddress = gAddress;
         this.gOwner = gOwner;
         this.gOwnerPhone = gOwnerPhone;
         this.gMembers = gMembers;
+        this.gImagePath = gImagePath;
+        this.gFireBasePath = gFireBasePath;
     }
 
 
@@ -77,6 +81,22 @@ public class GardenInfo {
 
     public void setgMembers(List<String> gMembers) {
         this.gMembers = gMembers;
+    }
+
+    public String getgImagePath() {
+        return gImagePath;
+    }
+
+    public void setgImagePath(String gImagePath) {
+        this.gImagePath = gImagePath;
+    }
+
+    public String getgFireBasePath() {
+        return gFireBasePath;
+    }
+
+    public void setgFireBasePath(String gFireBasePath) {
+        this.gFireBasePath = gFireBasePath;
     }
 
     /*public String getgMembers() {

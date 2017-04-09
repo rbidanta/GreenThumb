@@ -100,7 +100,7 @@ public class GardenPartner extends Fragment{
                 for(DataSnapshot gardenSnapshot : dataSnapshot.getChildren()){
                     Map<String,Object> gInfoMap = (HashMap<String, Object>) gardenSnapshot.getValue();
 
-                    System.out.println("gInfoMap"+ gInfoMap);
+                    //System.out.println("gInfoMap"+ gInfoMap);
 
                     //gardenSnapshot.getKey().
 
