@@ -1,12 +1,13 @@
 package pervasive.iu.com.greenthumb.DBHandler;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Rashmi on 4/2/17.
  */
 
-public class GardenInfo {
+public class GardenInfo implements Serializable {
 
     public String gName;
     public String gId;

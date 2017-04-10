@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import pervasive.iu.com.greenthumb.DBHandler.GardenInfo;
 import pervasive.iu.com.greenthumb.R;
 
 public class GardenOverview extends Fragment {
@@ -20,9 +21,13 @@ public class GardenOverview extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.activity_garden_overview,container,false);;
+        View view = inflater.inflate(R.layout.activity_garden_overview,container,false);
 
-        String gardenName = getArguments().get("gardenName").toString();
+        Bundle bundle = getArguments();
+
+        GardenInfo gInfo = (GardenInfo)bundle.getSerializable("gInfo");
+
+        String gardenName = gInfo.getgName().toString();
 
         TextView textView = (TextView) view.findViewById(R.id.ovrvwg_name);
 

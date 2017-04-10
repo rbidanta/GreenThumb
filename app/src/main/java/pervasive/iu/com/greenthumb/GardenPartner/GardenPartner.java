@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pervasive.iu.com.greenthumb.Adapter.GardenListViewAdapter;
 import pervasive.iu.com.greenthumb.DBHandler.GardenInfo;
 import pervasive.iu.com.greenthumb.R;
 
@@ -41,7 +42,8 @@ import pervasive.iu.com.greenthumb.R;
 public class GardenPartner extends Fragment{
 
     private ListView lv;
-    private List<String> gardenList;
+    //private List<String> gardenList;
+    private ArrayList<GardenInfo> gardenInfoList;
     private DatabaseReference gardenReference;
 
     @Override
@@ -83,25 +85,46 @@ public class GardenPartner extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                gardenList = new ArrayList<String>();
+                gardenInfoList = new ArrayList<GardenInfo>();
+                //gardenList = new ArrayList<String>();
 
                 for(DataSnapshot gardenSnapshot : dataSnapshot.getChildren()){
                     Map<String,Object> gInfoMap = (HashMap<String, Object>) gardenSnapshot.getValue();
 
-                    //System.out.println("gInfoMap"+ gInfoMap);
 
-                    //gardenSnapshot.getKey().
 
-                    gardenList.add(gInfoMap.get("gName").toString());
+                    GardenInfo ginfo = new GardenInfo();
+                    ginfo.setgName(gInfoMap.get("gName").toString());
+                    ginfo.setgId(gInfoMap.get("gId").toString());
+                    ginfo.setgAddress(gInfoMap.get("gAddress").toString());
+                    ginfo.setgFireBasePath(gInfoMap.get("gFireBasePath").toString());
+                    ginfo.setgOwner(gInfoMap.get("gOwner").toString());
+<<<<<<< HEAD
+                    ginfo.setgImagePath(gInfoMap.get("gImagePath").toString());
+                    ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
+                    
+=======
+                    //ginfo.setgImagePath(gInfoMap.get("gImagePath").toString());
+                    //ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
+
+>>>>>>> master
+
+                    gardenInfoList.add(ginfo);
+
+                    //gardenList.add(gInfoMap.get("gName").toString());
 
                 }
 
+                GardenListViewAdapter adapter = new GardenListViewAdapter(gardenInfoList,getContext());
 
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                lv.setAdapter(adapter);
+
+
+                /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                         getActivity(),
                         android.R.layout.simple_list_item_1,
                         gardenList);
-                lv.setAdapter(arrayAdapter);
+                lv.setAdapter(arrayAdapter);*/
 
 
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -110,19 +133,12 @@ public class GardenPartner extends Fragment{
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                        String name = (String) parent.getItemAtPosition(position);
-
-                        /*Intent gardenOverviewIntent = new Intent(getActivity(), GardenOverview.class);
-
-                        gardenOverviewIntent.putExtra("gardenName", name);
-
-
-                        startActivity(gardenOverviewIntent);*/
+                        GardenInfo gInfo = (GardenInfo) parent.getItemAtPosition(position);
 
 
                         Fragment frag = new GardenOverview();
                         Bundle bundle = new Bundle();
-                        bundle.putString("gardenName",name);
+                        bundle.putSerializable("gInfo",gInfo);
                         frag.setArguments(bundle);
 
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
