@@ -91,23 +91,15 @@ public class GardenPartner extends Fragment{
                 for(DataSnapshot gardenSnapshot : dataSnapshot.getChildren()){
                     Map<String,Object> gInfoMap = (HashMap<String, Object>) gardenSnapshot.getValue();
 
-
-
                     GardenInfo ginfo = new GardenInfo();
                     ginfo.setgName(gInfoMap.get("gName").toString());
                     ginfo.setgId(gInfoMap.get("gId").toString());
                     ginfo.setgAddress(gInfoMap.get("gAddress").toString());
                     ginfo.setgFireBasePath(gInfoMap.get("gFireBasePath").toString());
                     ginfo.setgOwner(gInfoMap.get("gOwner").toString());
-<<<<<<< HEAD
-                    ginfo.setgImagePath(gInfoMap.get("gImagePath").toString());
-                    ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
-                    
-=======
+
                     //ginfo.setgImagePath(gInfoMap.get("gImagePath").toString());
                     //ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
-
->>>>>>> master
 
                     gardenInfoList.add(ginfo);
 
