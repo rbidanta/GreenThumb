@@ -33,7 +33,9 @@
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".GardenPartner.RegisterGarden" />
+<activity android:name=".MyPlants.AddPlantActivity">
 
+</activity>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.greenthumb.android.fileprovider"
