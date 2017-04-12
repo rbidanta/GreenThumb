@@ -2,9 +2,6 @@ package pervasive.iu.com.greenthumb.MyPlants;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.graphics.drawable.Drawable;
 
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,7 +27,7 @@ public class PlantActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_plant);
+        setContentView(R.layout.activity_add_plant);
         firebaseAuth = FirebaseAuth.getInstance();
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.rgLocation);

@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import pervasive.iu.com.greenthumb.GardenPartner.GardenPartner;
+import pervasive.iu.com.greenthumb.MyPlants.plant;
 import pervasive.iu.com.greenthumb.R;
 
 public class Navigation extends AppCompatActivity
