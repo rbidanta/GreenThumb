@@ -49,10 +49,8 @@ public class GardenPartner extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Garden partner");
-
+        getActivity().setTitle("Garden Partner");
         gardenReference = FirebaseDatabase.getInstance().getReference("gardens");
-
         lv = (ListView) view.findViewById(R.id.gardenlist);
 
     }
@@ -97,6 +95,11 @@ public class GardenPartner extends Fragment{
                     ginfo.setgAddress(gInfoMap.get("gAddress").toString());
                     ginfo.setgFireBasePath(gInfoMap.get("gFireBasePath").toString());
                     ginfo.setgOwner(gInfoMap.get("gOwner").toString());
+                    if(null == gInfoMap.get("gOwnerPhone")){
+                        ginfo.setgOwnerPhone("");
+                    }else{
+                        ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
+                    }
 
                     //ginfo.setgImagePath(gInfoMap.get("gImagePath").toString());
                     //ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());

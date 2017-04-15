@@ -84,6 +84,7 @@ public class my_profile extends Fragment implements View.OnClickListener{
         String location_val=location.getText().toString().trim();
         String address_val=address.getText().toString().trim();
         String phone_num=phone.getText().toString().trim();
+        System.out.println("phone_num:"+phone_num);
 
         saveInfo saveinf=new saveInfo(first_name,last_name,location_val,address_val,phone_num);
         FirebaseUser user=firebaseAuth.getCurrentUser();
