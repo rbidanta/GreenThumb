@@ -69,9 +69,6 @@ public class GardenPartner extends Fragment{
                 startActivity(new Intent(getActivity(), RegisterGarden.class));
             }
         });
-
-
-
         return view;
     }
 
@@ -89,20 +86,6 @@ public class GardenPartner extends Fragment{
                 for(DataSnapshot gardenSnapshot : dataSnapshot.getChildren()){
                     Map<String,Object> gInfoMap = (HashMap<String, Object>) gardenSnapshot.getValue();
 
-<<<<<<< HEAD
-
-
-                    GardenInfo ginfo = new GardenInfo();
-                    ginfo.setgName(gInfoMap.get("gName").toString());
-                    ginfo.setgId(gInfoMap.get("gId").toString());
-                    ginfo.setgAddress(gInfoMap.get("gAddress").toString());
-                    ginfo.setgFireBasePath(gInfoMap.get("gFireBasePath").toString());
-                    ginfo.setgOwner(gInfoMap.get("gOwner").toString());
-                    //ginfo.setgImagePath(gInfoMap.get("gImagePath").toString());
-                    //ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
-
-
-=======
                     GardenInfo ginfo = new GardenInfo();
                     ginfo.setgName(gInfoMap.get("gName").toString());
                     ginfo.setgId(gInfoMap.get("gId").toString());
@@ -118,7 +101,7 @@ public class GardenPartner extends Fragment{
                     //ginfo.setgImagePath(gInfoMap.get("gImagePath").toString());
                     //ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
 
->>>>>>> My_Garden_Partner
+
                     gardenInfoList.add(ginfo);
 
                     //gardenList.add(gInfoMap.get("gName").toString());
@@ -128,13 +111,7 @@ public class GardenPartner extends Fragment{
                 GardenListViewAdapter adapter = new GardenListViewAdapter(gardenInfoList,getContext());
 
                 lv.setAdapter(adapter);
-<<<<<<< HEAD
 
-
-=======
-
-
->>>>>>> My_Garden_Partner
                 /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                         getActivity(),
                         android.R.layout.simple_list_item_1,

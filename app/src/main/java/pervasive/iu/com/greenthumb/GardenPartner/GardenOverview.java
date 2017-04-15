@@ -65,10 +65,6 @@ public class GardenOverview extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_garden_overview,container,false);
 
-
-
-
-
         Bundle bundle = getArguments();
 
         final GardenInfo gInfo = (GardenInfo)bundle.getSerializable("gInfo");
