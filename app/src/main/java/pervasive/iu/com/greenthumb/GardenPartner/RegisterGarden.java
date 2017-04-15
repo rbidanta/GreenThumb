@@ -98,6 +98,8 @@ public class RegisterGarden extends AppCompatActivity {
 
         final String usrId = firebaseAuth.getCurrentUser().getUid();
 
+
+
         System.out.println("loggedInUserInfo"+usrId);
         userReference = FirebaseDatabase.getInstance().getReference(usrId);
 

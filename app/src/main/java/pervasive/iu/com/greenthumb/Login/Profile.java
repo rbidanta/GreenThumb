@@ -67,7 +67,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         String last_name=lastname.getText().toString().trim();
         String location_val=location.getText().toString().trim();
         String address_val=address.getText().toString().trim();
-        String phone_num=firstname.getText().toString().trim();
+        String phone_num=phone.getText().toString().trim();
         List<Plants> plants=new ArrayList<>();
 
         saveInfo saveinf=new saveInfo(first_name,last_name,location_val,address_val,phone_num);
