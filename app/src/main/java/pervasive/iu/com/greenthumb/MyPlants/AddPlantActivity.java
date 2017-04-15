@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,12 +48,12 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference dbreference;
-    private ImageButton buttonSave;
+    private Button buttonSave;
     private ImageView plantImg;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference plantStorageRef = storage.getReference("plants");
     private StorageReference plantImagesRef;
-    private Uri gardenImageUri = null;
+    private Uri plantImageUri = null;
     private String mCurrentPhotoPath;
     /*private static final String JPEG_FILE_PREFIX = "IMG_"; 
     private static final String JPEG_FILE_SUFFIX = ".jpg";  
@@ -64,6 +66,8 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
     private RadioButton radioBtnIn;
     private RadioButton radioBtnOut;
     private TextInputLayout inputLayoutPlantName;
+    private TextInputLayout inputLayoutKitNum;
+    private TextInputLayout inputLayoutNotTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +82,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         }
 
         dbreference = FirebaseDatabase.getInstance().getReference();
-        buttonSave = (ImageButton) findViewById(R.id.btnSavePlant);
+        buttonSave = (Button) findViewById(R.id.btnSavePlant);
         plantImg = (ImageView) findViewById(R.id.imgViewPlant);
         editTextPlantName = (EditText) findViewById(R.id.txtPlantName);
         editTextTime = (EditText) findViewById(R.id.txtNotiTime);
@@ -86,25 +90,54 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         radioGroupLoc = (RadioGroup) findViewById(R.id.rgLocation);
         radioBtnIn = (RadioButton) findViewById(R.id.rbIndoor);
         radioBtnOut = (RadioButton) findViewById(R.id.rbOutdoor);
-        //inputLayoutPlantName = (TextInputLayout) findViewById(R.id.inputPlantName);
+        inputLayoutPlantName = (TextInputLayout) findViewById(R.id.input_layout_pname);
+        inputLayoutKitNum = (TextInputLayout) findViewById(R.id.input_layout_KitNum);
+        inputLayoutNotTime = (TextInputLayout) findViewById(R.id.input_layout_NotTime);
+
         buttonSave.setOnClickListener(this);
-        OnClickListener first_radio_listener = new OnClickListener() {
-            public void onClick(View v) {
-                if (radioBtnIn.isChecked()) {
-                }
-            }
-        };
     }
+
+    @Override
+    public void onClick(View v) {
+        System.out.println("Inside on click");
+        if(v == buttonSave)
+        {
+            if(!validatePlantName()){
+                return;
+            }
+
+            if(!validateKitNum()){
+                return;
+            }
+
+            if(!validateNotTime()){
+                return;
+            }
+
+            if(!validatePlantImage()) {
+                Toast.makeText(this,R.string.Err_Plant_Image,Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            savePlant();
+
+            Toast.makeText(this,"Plant information has been saved successfully",Toast.LENGTH_LONG).show();
+
+            finish();
+
+        }
+    }
+
     public void savePlant(){
         System.out.println("Inside savePlant");
-
-        dbreference = FirebaseDatabase.getInstance().getReference("Plants");
-        String plantId = dbreference.push().getKey();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        DatabaseReference def = dbreference.child(user.getUid()).child("Plants");
+        String plantId = def.push().getKey();
         String userId = user.getUid();
         String kitId = editTextKitId.getText().toString().trim();
         String plantName = editTextPlantName.getText().toString().trim();
         String notificationTime = editTextTime.getText().toString().trim();
+
         // get selected radio button from radioGroup
         int selectedId = radioGroupLoc.getCheckedRadioButtonId();
 
@@ -124,32 +157,17 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         val.put("moisture", "Twenty One");
         val.put("temp","18.5");
         val.put("ph", "5.5");
+
         HashMap<String, String> thresholdValues = val;
 
         Plants plant = new Plants(plantId, kitId, userId, plantName, location, notificationTime, lastModified, thresholdValues);
-        dbreference.child(plantId).setValue(plant);
+        def.child(plantId).setValue(plant);
         putImagetoFireBase();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if(v==buttonSave)
-        {
-            if(!validatePlantName()){
-                return;
-            }
-            savePlant();
-
-            Toast.makeText(this,"Plant information has been saved successfully",Toast.LENGTH_LONG).show();
-
-            finish();
-
-        }
     }
 
     private boolean validatePlantName() {
         if (editTextPlantName.getText().toString().trim().isEmpty()) {
-            inputLayoutPlantName.setError(getString(R.string.err_msg_gname));
+            inputLayoutPlantName.setError(getString(R.string.Err_Plant_Name));
             requestFocus(editTextPlantName);
             return false;
         } else {
@@ -159,6 +177,37 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         return true;
     }
 
+    private boolean validateKitNum() {
+        if (editTextKitId.getText().toString().trim().isEmpty()) {
+            inputLayoutKitNum.setError(getString(R.string.Err_Kit_Num));
+            requestFocus(editTextKitId);
+            return false;
+        } else {
+            inputLayoutKitNum.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+    private boolean validateNotTime() {
+        if (editTextTime.getText().toString().trim().isEmpty()) {
+            inputLayoutNotTime.setError(getString(R.string.Err_Not_Time));
+            requestFocus(editTextTime);
+            return false;
+        } else {
+            inputLayoutNotTime.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+    private boolean validatePlantImage() {
+
+        if (plantImageUri == null) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
     static final int REQUEST_TAKE_PHOTO = 1;
 
     public void onClickCamera(View v){
@@ -274,10 +323,20 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 
         if (mCurrentPhotoPath != null) {
             setPic();
-            //galleryAddPic();
+            galleryAddPic();
             mCurrentPhotoPath = null;
         }
 
+    }
+    private void galleryAddPic() {
+
+        System.out.println("Inside galleryAddPic");
+        Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        plantImageUri = contentUri;
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
     }
 
     private void requestFocus(View view) {

@@ -402,13 +402,11 @@ public class RegisterGarden extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (resultCode == RESULT_OK) {
-
             System.out.println("Inside Activity Result");
             handleBigCameraPhoto();
         }
 
     }
-
 
     private void putImagetoFireBase(){
         mImageView.setDrawingCacheEnabled(true);
