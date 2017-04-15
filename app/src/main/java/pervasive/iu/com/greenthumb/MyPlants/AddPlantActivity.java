@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.FileProvider;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,7 +48,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference dbreference;
-    private ImageButton buttonSave;
+    private Button buttonSave;
     private ImageView plantImg;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference plantStorageRef = storage.getReference("plants");
@@ -78,7 +80,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         }
 
         dbreference = FirebaseDatabase.getInstance().getReference();
-        buttonSave = (ImageButton) findViewById(R.id.btnSavePlant);
+        buttonSave = (Button) findViewById(R.id.btnSavePlant);
         plantImg = (ImageView) findViewById(R.id.imgViewPlant);
         editTextPlantName = (EditText) findViewById(R.id.txtPlantName);
         editTextTime = (EditText) findViewById(R.id.txtNotiTime);
@@ -86,25 +88,24 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         radioGroupLoc = (RadioGroup) findViewById(R.id.rgLocation);
         radioBtnIn = (RadioButton) findViewById(R.id.rbIndoor);
         radioBtnOut = (RadioButton) findViewById(R.id.rbOutdoor);
-        //inputLayoutPlantName = (TextInputLayout) findViewById(R.id.inputPlantName);
         buttonSave.setOnClickListener(this);
-        OnClickListener first_radio_listener = new OnClickListener() {
+        /*OnClickListener first_radio_listener = new OnClickListener() {
             public void onClick(View v) {
                 if (radioBtnIn.isChecked()) {
                 }
             }
-        };
+        };*/
     }
     public void savePlant(){
         System.out.println("Inside savePlant");
-
-        dbreference = FirebaseDatabase.getInstance().getReference("Plants");
-        String plantId = dbreference.push().getKey();
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        DatabaseReference def = dbreference.child(user.getUid()).child("Plants");
+        String plantId = def.push().getKey();
         String userId = user.getUid();
         String kitId = editTextKitId.getText().toString().trim();
         String plantName = editTextPlantName.getText().toString().trim();
         String notificationTime = editTextTime.getText().toString().trim();
+
         // get selected radio button from radioGroup
         int selectedId = radioGroupLoc.getCheckedRadioButtonId();
 
@@ -124,20 +125,19 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         val.put("moisture", "Twenty One");
         val.put("temp","18.5");
         val.put("ph", "5.5");
+
         HashMap<String, String> thresholdValues = val;
 
         Plants plant = new Plants(plantId, kitId, userId, plantName, location, notificationTime, lastModified, thresholdValues);
-        dbreference.child(plantId).setValue(plant);
+        def.child(plantId).setValue(plant);
         putImagetoFireBase();
     }
 
     @Override
     public void onClick(View v) {
+        System.out.println("Inside on click");
         if(v==buttonSave)
         {
-            if(!validatePlantName()){
-                return;
-            }
             savePlant();
 
             Toast.makeText(this,"Plant information has been saved successfully",Toast.LENGTH_LONG).show();

@@ -15,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,7 +45,9 @@ public class plant extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("My plant");
-        plantReference = FirebaseDatabase.getInstance().getReference("Plants");
+        DatabaseReference def = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        plantReference = def.child(user.getUid()).child("Plants");
 
         lv = (ListView) view.findViewById(R.id.plantList);
     }
@@ -97,7 +101,8 @@ public class plant extends Fragment {
 
                         String name = (String) parent.getItemAtPosition(position);
 
-                        Fragment frag = new GardenOverview();
+                        startActivity(new Intent(getActivity(), AddPlantActivity.class));
+                       /* Fragment frag = new GardenOverview();
                         Bundle bundle = new Bundle();
                         bundle.putString("gardenName", name);
                         frag.setArguments(bundle);
@@ -105,7 +110,7 @@ public class plant extends Fragment {
                         FragmentTransaction transaction = getFragmentManager().beginTransaction();
                         transaction.replace(R.id.content_navigation, frag); // give your fragment container id in first parameter
                         transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                        transaction.commit();
+                        transaction.commit();*/
                     }
                 });
 

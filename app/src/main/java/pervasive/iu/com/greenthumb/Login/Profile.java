@@ -14,7 +14,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pervasive.iu.com.greenthumb.DBHandler.saveInfo;
+import pervasive.iu.com.greenthumb.Model.Plants;
 import pervasive.iu.com.greenthumb.R;
 
 public class Profile extends AppCompatActivity implements View.OnClickListener{
@@ -64,6 +68,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener{
         String location_val=location.getText().toString().trim();
         String address_val=address.getText().toString().trim();
         String phone_num=firstname.getText().toString().trim();
+        List<Plants> plants=new ArrayList<>();
 
         saveInfo saveinf=new saveInfo(first_name,last_name,location_val,address_val,phone_num);
         FirebaseUser user=firebaseAuth.getCurrentUser();
