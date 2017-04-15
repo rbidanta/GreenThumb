@@ -42,8 +42,7 @@ public class GardenOverview extends Fragment {
     private StorageReference gardenStorageRef = storage.getReference("gardens");
     private StorageReference gardenImagesRef;
 
-
-    private String owner = "";
+    private String currentUser ="";
     private String firstname = "";
     private String lastname = "";
 
@@ -53,6 +52,8 @@ public class GardenOverview extends Fragment {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.garden_overview);
         firebaseAuth = FirebaseAuth.getInstance();
+
+        currentUser = firebaseAuth.getCurrentUser().getUid().toString();
 
 
     }
@@ -64,13 +65,13 @@ public class GardenOverview extends Fragment {
 
         View view = inflater.inflate(R.layout.activity_garden_overview,container,false);
 
-        FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        String currentUser = user.getUid().toString();
+
+
 
         Bundle bundle = getArguments();
 
-        GardenInfo gInfo = (GardenInfo)bundle.getSerializable("gInfo");
+        final GardenInfo gInfo = (GardenInfo)bundle.getSerializable("gInfo");
 
         final String gardenName = gInfo.getgName().toString();
 
@@ -154,24 +155,40 @@ public class GardenOverview extends Fragment {
         }
 
 
+
+        reqMembership.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                requestMembership(gInfo.getgId(),currentUser);
+
+                Toast.makeText(getActivity(),"Membership Request Sent to Garden Owner",Toast.LENGTH_LONG).show();
+            }
+        });
+
         return view;
     }
 
 
-    public void onReqMembership(View view){
-
-
-        Toast.makeText(getActivity(),"Membership Request Sent to Garden Owner",Toast.LENGTH_LONG).show();
-
-
-
-
-    }
 
     @Override
     public void onStart() {
         super.onStart();
     }
+
+
+
+    private void requestMembership(String gardenId , String requesterId){
+
+        DatabaseReference gardenReference = FirebaseDatabase.getInstance().getReference("gardens");
+        gardenReference.child(gardenId).child("gMembers").child(requesterId).setValue(Boolean.FALSE);
+
+    }
+
+
+
+
 
 
 }
