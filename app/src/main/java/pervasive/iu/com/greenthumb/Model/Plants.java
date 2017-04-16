@@ -1,5 +1,6 @@
 package pervasive.iu.com.greenthumb.Model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -7,12 +8,13 @@ import java.util.HashMap;
  * Created by madrinathapa on 3/25/17.
  */
 
-public class Plants {
+public class Plants implements Serializable {
     private String PlantId;
     private String KitId;
     private String UserId;
     private String PlantName;
     private String Location;
+    private String PlantImagePath;
     private String NotificationTime;
     private Date LastModified;
     private HashMap<String, String> ThresholdValues;
@@ -57,6 +59,14 @@ public class Plants {
         return Location;
     }
 
+    public void setPlantImagePath(String plantImagePath){
+        PlantImagePath = plantImagePath;
+    }
+
+    public String getPlantImagePath(){
+        return PlantImagePath;
+    }
+
     public void setNotificationTime(String notificationTime){
         NotificationTime = notificationTime;
     }
@@ -81,15 +91,19 @@ public class Plants {
         return ThresholdValues;
     }
 
-    public Plants(String plantId, String kitId, String userId, String plantName, String location,
+    public Plants(String plantId, String kitId, String userId, String plantName, String plantImagePath, String location,
                   String notificationTime, Date lastModified, HashMap<String, String> thresholdValues) {
         this.PlantId = plantId;
         this.KitId = kitId;
         this.UserId = userId;
         this.PlantName = plantName;
+        this.PlantImagePath = plantImagePath;
         this.Location = location;
         this.NotificationTime = notificationTime;
         this.LastModified = lastModified;
         this.ThresholdValues = thresholdValues;
+    }
+    public Plants(){
+
     }
 }
