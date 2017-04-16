@@ -101,25 +101,15 @@ public class GardenPartner extends Fragment{
                         ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
                     }
 
-                    //ginfo.setgImagePath(gInfoMap.get("gImagePath").toString());
-                    //ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
-
+                    
                     gardenInfoList.add(ginfo);
 
-                    //gardenList.add(gInfoMap.get("gName").toString());
 
                 }
 
                 GardenListViewAdapter adapter = new GardenListViewAdapter(gardenInfoList,getContext());
 
                 lv.setAdapter(adapter);
-
-
-                /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                        getActivity(),
-                        android.R.layout.simple_list_item_1,
-                        gardenList);
-                lv.setAdapter(arrayAdapter);*/
 
 
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){

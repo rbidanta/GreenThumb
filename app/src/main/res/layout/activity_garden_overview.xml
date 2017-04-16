@@ -121,6 +121,16 @@
             android:id="@+id/req_memship"
             android:visibility="invisible" />
 
+
+        <Button
+            android:text="@string/view_requests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/view_requests"
+            android:visibility="invisible" />
+
     </LinearLayout>
 
 </RelativeLayout>

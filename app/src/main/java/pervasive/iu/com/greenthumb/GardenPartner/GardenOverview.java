@@ -25,6 +25,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import pervasive.iu.com.greenthumb.DBHandler.GardenInfo;
 import pervasive.iu.com.greenthumb.R;
 
@@ -32,7 +35,7 @@ public class GardenOverview extends Fragment {
 
 
     private EditText gName,gAddress,gOwnerName,gContactNumber;
-    private Button reqMembership;
+    private Button reqMembership,cancelMembership,viewRequests;
     private ImageView gardenImage;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference dbreference;
@@ -45,6 +48,8 @@ public class GardenOverview extends Fragment {
     private String currentUser ="";
     private String firstname = "";
     private String lastname = "";
+
+    boolean hasMemebershipRequested = false;
 
 
     @Override
@@ -94,6 +99,8 @@ public class GardenOverview extends Fragment {
         gContactNumber = (EditText) view.findViewById(R.id.g_contactNumber);
         gardenImage = (ImageView) view.findViewById(R.id.gardenOImage);
         reqMembership = (Button) view.findViewById(R.id.req_memship);
+        //cancelMembership = (Button) view.findViewById(R.id.cancel_memship);
+        viewRequests = (Button) view.findViewById(R.id.view_requests);
 
 
         Glide.with(view.getContext())
@@ -135,6 +142,9 @@ public class GardenOverview extends Fragment {
 
 
 
+
+
+
         gName.setText(gardenName);
         gAddress.setText(location);
         gContactNumber.setText(contactNumber);
@@ -145,13 +155,18 @@ public class GardenOverview extends Fragment {
             gAddress.setEnabled(true);
             gContactNumber.setEnabled(true);
             reqMembership.setVisibility(View.INVISIBLE);
+            cancelMembership.setVisibility(View.INVISIBLE);
+            viewRequests.setVisibility(View.VISIBLE);
         }else{
 
             gName.setEnabled(false);
             gOwnerName.setEnabled(false);
             gAddress.setEnabled(false);
             gContactNumber.setEnabled(false);
+            // Check if the current user has requested membership
             reqMembership.setVisibility(View.VISIBLE);
+            hasMembershipRequested(gInfo.getgId(),currentUser);
+
         }
 
 
@@ -160,12 +175,41 @@ public class GardenOverview extends Fragment {
             @Override
             public void onClick(View v) {
 
+                if(reqMembership.getText().toString().equalsIgnoreCase("Request Membership")){
 
-                requestMembership(gInfo.getgId(),currentUser);
+                    requestMembership(gInfo.getgId(),currentUser);
+                    //reqMembership.setVisibility(View.INVISIBLE);
+                    //cancelMembership.setVisibility(View.VISIBLE);
+                    reqMembership.setText(R.string.cancel_membership);
 
-                Toast.makeText(getActivity(),"Membership Request Sent to Garden Owner",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"Membership Request Sent to Garden Owner",Toast.LENGTH_LONG).show();
+
+                }else if (reqMembership.getText().toString().equalsIgnoreCase("Cancel Membership")){
+
+                    cancelMembership(gInfo.getgId(),currentUser);
+                    reqMembership.setText(R.string.request_membership);
+
+                    Toast.makeText(getActivity(),"Membership Request has Been Cancelled",Toast.LENGTH_LONG).show();
+
+                }
+
+
+
             }
         });
+
+        /*cancelMembership.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                cancelMembership(gInfo.getgId(),currentUser);
+                reqMembership.setVisibility(View.VISIBLE);
+                cancelMembership.setVisibility(View.INVISIBLE);
+
+                Toast.makeText(getActivity(),"Membership Request has Been Cancelled",Toast.LENGTH_LONG).show();
+
+            }
+        });*/
 
         return view;
     }
@@ -184,6 +228,48 @@ public class GardenOverview extends Fragment {
         DatabaseReference gardenReference = FirebaseDatabase.getInstance().getReference("gardens");
         gardenReference.child(gardenId).child("gMembers").child(requesterId).setValue(Boolean.FALSE);
 
+    }
+
+    private void cancelMembership(String gardenId, String requesterId){
+
+        DatabaseReference gardenReference = FirebaseDatabase.getInstance().getReference("gardens");
+        gardenReference.child(gardenId).child("gMembers").child(requesterId).setValue(null);
+
+    }
+
+
+
+    private void hasMembershipRequested(String gardenId, String requesterId){
+
+        DatabaseReference gardenReference = FirebaseDatabase.getInstance().getReference("gardens").child(gardenId).child("gMembers");
+
+        gardenReference.addValueEventListener(new ValueEventListener() {
+
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+               for(DataSnapshot memberSnapshot : dataSnapshot.getChildren()){
+
+                   if(null != memberSnapshot.getKey().toString() && memberSnapshot.getKey().toString().equalsIgnoreCase(currentUser)){
+                       hasMemebershipRequested = true;
+                       reqMembership.setText(R.string.cancel_membership);
+                       //cancelMembership.setVisibility(View.VISIBLE);
+                       break;
+                   }else{
+                       hasMemebershipRequested = false;
+                       reqMembership.setText(R.string.request_membership);
+                       //cancelMembership.setVisibility(View.INVISIBLE);
+                   }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

@@ -35,6 +35,9 @@
     <string name="galbum_name">GardenAlbum</string>
     <string name="garden_overview">Garden Overview</string>
     <string name="request_membership">Request Membership</string>
+    <string name="cancel_membership">Cancel Membership</string>
+    <string name="view_requests">View Requests</string>
     <string name="msg_membership">Membership Request Sent to Owner</string>
+
 
 </resources>
