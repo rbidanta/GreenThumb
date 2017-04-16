@@ -108,22 +108,22 @@
                     android:id="@+id/rbIndoor"
                     android:layout_above="@+id/rbOutdoor"
                     android:layout_toEndOf="@+id/rgLocation" />
-
-                <Button
-                    android:text="Save"
-                    android:id="@+id/btnSavePlant"
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dp"
-
-                    android:layout_weight="1" />
-
             </RadioGroup>
+        <Button
+            android:text="Save"
+            android:id="@+id/btnSavePlant"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+
+            android:layout_weight="1" />
+        <Button
+            android:text="Update"
+            android:id="@+id/btnUpdatePlant"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:visibility="invisible"
+            android:layout_weight="1" />
     </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="147dp"
-        android:weightSum="1"></LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
     </ScrollView>
