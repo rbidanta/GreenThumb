@@ -15,6 +15,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +28,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pervasive.iu.com.greenthumb.Adapter.GardenListViewAdapter;
+import pervasive.iu.com.greenthumb.Adapter.PlantListViewAdapter;
 import pervasive.iu.com.greenthumb.GardenPartner.GardenOverview;
+import pervasive.iu.com.greenthumb.Model.Plants;
 import pervasive.iu.com.greenthumb.R;
 
 /**
@@ -36,14 +41,16 @@ import pervasive.iu.com.greenthumb.R;
 public class plant extends Fragment {
     private ImageButton btnAddPlant;
     private ListView lv;
-    private List<String> plantList;
+    private ArrayList<Plants> plantList;
     private DatabaseReference plantReference;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("My plant");
-        plantReference = FirebaseDatabase.getInstance().getReference("Plants");
+        DatabaseReference def = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        plantReference = def.child(user.getUid()).child("Plants");
 
         lv = (ListView) view.findViewById(R.id.plantList);
     }
@@ -74,20 +81,24 @@ public class plant extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                plantList = new ArrayList<String>();
+                plantList = new ArrayList<Plants>();
 
-                for (DataSnapshot gardenSnapshot : dataSnapshot.getChildren()) {
-                    Map<String, Object> gInfoMap = (HashMap<String, Object>) gardenSnapshot.getValue();
+                for (DataSnapshot plantSnapShot : dataSnapshot.getChildren()) {
+                    Map<String, Object> plantInfoMap = (HashMap<String, Object>) plantSnapShot.getValue();
 
-                    plantList.add(gInfoMap.get("plantName").toString());
+                    Plants plantInfo = new Plants();
+                    plantInfo.setPlantName(plantInfoMap.get("plantName").toString());
+                    plantInfo.setKitId(plantInfoMap.get("kitId").toString());
+                    plantInfo.setNotificationTime(plantInfoMap.get("notificationTime").toString());
+                    plantInfo.setLocation(plantInfoMap.get("location").toString());
+                    plantInfo.setPlantImagePath(plantInfoMap.get("plantImagePath").toString());
+                    plantInfo.setPlantId(plantInfoMap.get("plantId").toString());
+                    plantList.add(plantInfo);
                 }
 
+                PlantListViewAdapter plantAdapter = new PlantListViewAdapter(plantList,getContext());
 
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                        getActivity(),
-                        android.R.layout.simple_list_item_1,
-                        plantList);
-                lv.setAdapter(arrayAdapter);
+                lv.setAdapter(plantAdapter);
 
 
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -95,17 +106,12 @@ public class plant extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                        String name = (String) parent.getItemAtPosition(position);
+                        Plants plantInfo = (Plants) parent.getItemAtPosition(position);
+                        System.out.println("Inside onclicklistener" + plantInfo.getPlantName());
 
-                        Fragment frag = new GardenOverview();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("gardenName", name);
-                        frag.setArguments(bundle);
-
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.content_navigation, frag); // give your fragment container id in first parameter
-                        transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                        transaction.commit();
+                        Intent myIntent = new Intent(getActivity(), AddPlantActivity.class);
+                        myIntent.putExtra("plantInfo", plantInfo);
+                        startActivity(myIntent);
                     }
                 });
 
@@ -121,7 +127,6 @@ public class plant extends Fragment {
 
 
     }
-
 
     @Override
     public void onOptionsMenuClosed(Menu menu) {

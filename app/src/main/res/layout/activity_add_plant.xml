@@ -1,122 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_plant"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="pervasive.iu.com.greenthumb.MyPlants.PlantActivity">
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_save"
-        android:id="@+id/btnSavePlant"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/txtNotiTime" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_default_plant"
-        android:id="@+id/imgViewPlant"
-        android:layout_marginTop="49dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        app:fabSize="mini"
-        app:srcCompat="@drawable/ic_add_image"
-        android:id="@+id/btnAddImage"
-        android:onClick="onClickCamera"
-        android:layout_below="@+id/imgViewPlant"
-        android:layout_alignStart="@+id/btnSavePlant" />
-
-    <!--<android.support.design.widget.TextInputLayout
-        android:id="@+id/inputPlantName"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical">
 
-        <EditText
-            android:inputType="text"
-            android:id="@+id/txtPlantName"
-            android:hint="Plant Name"
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="16dp"
-            android:layout_below="@+id/btnAddImage"
-            android:layout_alignEnd="@+id/txtKitNum" />
-    </android.support.design.widget.TextInputLayout>-->
+            android:layout_height="147dp"
+            android:weightSum="1">
 
-    <EditText
-        android:inputType="text"
-        android:id="@+id/txtPlantName"
-        android:hint="Plant Name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/btnAddImage"
-        android:layout_alignEnd="@+id/txtKitNum" />
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="237dp"
+                android:layout_height="100dp"
+                app:srcCompat="@drawable/ic_default_plant"
+                android:id="@+id/imgViewPlant"
+                android:layout_weight="0.69" />
 
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rgLocation"
-        android:layout_below="@+id/txtNotiTime"
-        android:layout_alignStart="@+id/txtNotiTime"
-        android:layout_marginTop="14dp">
-        <RadioButton
-            android:text="Outdoor"
-            android:layout_width="144dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/rbOutdoor"
-            android:layout_above="@+id/btnSavePlant"
-            android:layout_alignStart="@+id/rgLocation"
-            android:layout_marginBottom="13dp" />
+            <ImageButton
+                android:layout_gravity="center"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:srcCompat="@drawable/ic_add_image"
+                android:id="@+id/btnAddImage"
+                android:onClick="onClickCamera"
+                />
 
-        <RadioButton
-            android:text="Indoor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/rbIndoor"
-            android:layout_above="@+id/rbOutdoor"
-            android:layout_toEndOf="@+id/rgLocation" />
-    </RadioGroup>
+        </LinearLayout>
 
-    <EditText
-        android:inputType="text"
-        android:id="@+id/txtNotiTime"
-        android:hint="Notification time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_below="@+id/txtPlantName"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="56dp" />
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_pname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <EditText
-        android:inputType="text"
-        android:id="@+id/txtKitNum"
-        android:hint="Kit Number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="11dp"
-        android:layout_below="@+id/txtPlantName"
-        android:layout_centerHorizontal="true" />
+                <EditText
+                    android:id="@+id/txtPlantName"
+                    android:hint="Plant Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
 
-</RelativeLayout>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_KitNum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/txtKitNum"
+                    android:hint="Kit Number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_NotTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/txtNotiTime"
+                    android:hint="Notification Time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </android.support.design.widget.TextInputLayout>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rgLocation"
+                android:layout_below="@+id/txtNotiTime"
+                android:layout_alignStart="@+id/txtNotiTime"
+                android:layout_marginTop="14dp">
+                <RadioButton
+                    android:text="Outdoor"
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbOutdoor"
+                    android:layout_above="@+id/btnSavePlant"
+                    android:layout_alignStart="@+id/rgLocation"
+                    android:layout_marginBottom="13dp" />
+
+                <RadioButton
+                    android:text="Indoor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbIndoor"
+                    android:layout_above="@+id/rbOutdoor"
+                    android:layout_toEndOf="@+id/rgLocation" />
+            </RadioGroup>
+        <Button
+            android:text="Save"
+            android:id="@+id/btnSavePlant"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+
+            android:layout_weight="1" />
+        <Button
+            android:text="Update"
+            android:id="@+id/btnUpdatePlant"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:visibility="invisible"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
+    </ScrollView>

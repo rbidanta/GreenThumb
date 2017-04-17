@@ -1,5 +1,9 @@
 package pervasive.iu.com.greenthumb.DBHandler;
 
+import java.util.List;
+
+import pervasive.iu.com.greenthumb.Model.Plants;
+
 /**
  * Created by deepakasinathan on 3/19/17.
  */
@@ -10,6 +14,7 @@ public class saveInfo {
     public String address;
     public String location;
     public String phone;
+    public List<Plants> Plants;
 
     public saveInfo()
     {
@@ -22,6 +27,7 @@ public class saveInfo {
         this.address = address;
         this.location = location;
         this.phone = phone;
+     //   this.Plants = plants;
     }
 
     public String getFirstname() {

@@ -17,7 +17,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import pervasive.iu.com.greenthumb.DBHandler.saveInfo;
+import pervasive.iu.com.greenthumb.Model.Plants;
 import pervasive.iu.com.greenthumb.R;
 
 /**
@@ -30,7 +34,6 @@ public class my_profile extends Fragment implements View.OnClickListener{
     private TextView profileview;
     private Button logout_button;
     private DatabaseReference dbreference;
-    //private TextView name_view,email_view,location_view,phone_view;
     private EditText firstname,lastname,email,location,address,phone;
     private Button buttonsave;
 
@@ -84,11 +87,13 @@ public class my_profile extends Fragment implements View.OnClickListener{
         String location_val=location.getText().toString().trim();
         String address_val=address.getText().toString().trim();
         String phone_num=phone.getText().toString().trim();
+        
+        List<Plants> plants=new ArrayList<>();
 
         saveInfo saveinf=new saveInfo(first_name,last_name,location_val,address_val,phone_num);
         FirebaseUser user=firebaseAuth.getCurrentUser();
 
-        dbreference.child(user.getUid()).setValue(saveinf);
+       dbreference.child(user.getUid()).setValue(saveinf);
         Toast.makeText(getActivity(),"User information saved successfully",Toast.LENGTH_LONG).show();
 
 
