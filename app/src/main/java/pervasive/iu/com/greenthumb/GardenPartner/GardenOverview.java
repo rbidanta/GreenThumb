@@ -246,7 +246,7 @@ public class GardenOverview extends Fragment {
 
                     System.out.println("Member: "+member);
 
-                    memberObjectList.add(getMemberInfo(member.toString()));
+                    getMemberInfo(member.toString());
 
 
                 }
@@ -433,7 +433,7 @@ public class GardenOverview extends Fragment {
 
 
 
-    public MemberInfo getMemberInfo(String memberId){
+    public void getMemberInfo(String memberId){
 
         final MemberInfo memberInfo = new MemberInfo();
 
@@ -451,22 +451,21 @@ public class GardenOverview extends Fragment {
 
                 for(DataSnapshot memberds : dataSnapshot.getChildren()){
 
-
-
                     if(memberds.getKey().equalsIgnoreCase("firstname")){
 
-
-
+                        memberInfo.setFirstname(memberds.getValue().toString());
                         System.out.println("First Name:"+memberds.getValue().toString());
 
                     }else if(memberds.getKey().equalsIgnoreCase("lastname")){
 
-                        //memberInfo.setLastname(memberds.getValue().toString());
-                        System.out.println("First Name:"+memberds.getValue().toString());
+                        memberInfo.setLastname(memberds.getValue().toString());
+                        System.out.println("Last Name:"+memberds.getValue().toString());
 
                     }
 
                 }
+
+                memberObjectList.add(memberInfo);
 
             }
 
@@ -476,7 +475,6 @@ public class GardenOverview extends Fragment {
             }
         });
 
-        return memberInfo;
     }
 
 
