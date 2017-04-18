@@ -39,10 +39,15 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import pervasive.iu.com.greenthumb.DBHandler.GardenInfo;
+import pervasive.iu.com.greenthumb.DBHandler.TasksInfo;
 import pervasive.iu.com.greenthumb.DBHandler.saveInfo;
 import pervasive.iu.com.greenthumb.Login.LoginActivity;
 import pervasive.iu.com.greenthumb.R;
@@ -223,6 +228,8 @@ public class RegisterGarden extends AppCompatActivity {
 
         //Storing Image on Firebase
         putImagetoFireBase();
+
+        addTasksToGarden(gId);
 
     }
 
@@ -429,6 +436,72 @@ public class RegisterGarden extends AppCompatActivity {
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
             }
         });
+    }
+
+
+
+
+    private void addTasksToGarden(final String gardenId){
+
+        DatabaseReference taskReference = FirebaseDatabase.getInstance().getReference("tasks");
+
+        taskReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+
+                    Map<String,String> taskdetail = (HashMap<String, String>) ds.getValue();
+
+                    System.out.println("Task Details:"+taskdetail);
+
+                    //TasksInfo taskInfo = new TasksInfo();
+                   DatabaseReference taskGardenRoot = FirebaseDatabase.getInstance().getReference("taskinstance");
+
+
+                    String taskinstacneId = dbreference.push().getKey();
+
+                    long deadline = Calendar.getInstance().getTimeInMillis();
+
+                    String assignedTo = " ";
+                    String completedBy = " ";
+
+                    String taskname = taskdetail.get("description");
+                    String frequency = taskdetail.get("frequency");
+
+                    if(frequency.equalsIgnoreCase("weekly")){
+
+                        deadline = deadline + toMilliSeconds(7);
+
+                    }else if(frequency.equalsIgnoreCase("months")){
+                        deadline = deadline + toMilliSeconds(30);
+
+                    }else if(frequency.equalsIgnoreCase("yearly")){
+                        deadline = deadline + toMilliSeconds(180);
+
+                    }else{
+                        deadline = deadline + toMilliSeconds(365);
+                    }
+
+                    TasksInfo tasksInfo = new TasksInfo(taskinstacneId,taskname,deadline,assignedTo,completedBy);
+                    taskGardenRoot.child(gardenId).child(taskinstacneId).setValue(tasksInfo);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+    public static long toMilliSeconds(double day)
+    {
+        return (long) (day * 24 * 60 * 60 * 1000);
     }
 
 

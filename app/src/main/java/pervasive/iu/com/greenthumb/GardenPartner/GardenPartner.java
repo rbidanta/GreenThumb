@@ -98,13 +98,16 @@ public class GardenPartner extends Fragment{
                         ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
                     }
 
+<<<<<<< HEAD
                     //ginfo.setgImagePath(gInfoMap.get("gImagePath").toString());
                     //ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
 
 
+=======
+                    
+>>>>>>> My_Garden_Partner
                     gardenInfoList.add(ginfo);
 
-                    //gardenList.add(gInfoMap.get("gName").toString());
 
                 }
 
@@ -112,12 +115,15 @@ public class GardenPartner extends Fragment{
 
                 lv.setAdapter(adapter);
 
+<<<<<<< HEAD
                 /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                         getActivity(),
                         android.R.layout.simple_list_item_1,
                         gardenList);
                 lv.setAdapter(arrayAdapter);*/
 
+=======
+>>>>>>> My_Garden_Partner
 
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 

@@ -11,7 +11,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pervasive.iu.com.greenthumb.GardenPartner.GardenOverview">
 
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -39,12 +41,14 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/g_name" />
+                    android:id="@+id/g_name"
+                     />
             </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <TextView
                     android:text="@string/garden_address"
@@ -61,7 +65,8 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <TextView
                     android:text="@string/garden_owner"
@@ -78,7 +83,8 @@
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent"
+                android:layout_weight="1">
 
                 <TextView
                     android:text="@string/garden_contact"
@@ -97,16 +103,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="124dp"
-            android:layout_weight="0.90">
+            android:layout_height="198dp"
+            >
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="195dp"
                 app:srcCompat="@drawable/ic_default_plant"
                 android:id="@+id/gardenOImage"
-                android:layout_weight="0.98"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
 
 
 
@@ -119,8 +124,41 @@
             android:layout_below="@+id/linearLayout"
             android:layout_centerHorizontal="true"
             android:id="@+id/req_memship"
+            android:visibility="gone" />
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            >
+
+            <Button
+            android:text="@string/update_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/update_info"
+            android:onClick="updateInfo"
             android:visibility="invisible" />
 
+            <Button
+                android:text="@string/view_requests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearLayout"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/view_requests"
+                android:visibility="invisible" />
+
+       </LinearLayout>
+
+
+
     </LinearLayout>
+
+</ScrollView>
 
 </RelativeLayout>
