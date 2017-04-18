@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/frameLayout">
+
+<ScrollView
+    android:id="@+id/addplantsv"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,34 +20,34 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="147dp"
-            android:weightSum="1">
+            android:layout_height="250dp"
+            android:weightSum="2">
 
             <ImageView
                 android:layout_gravity="center"
-                android:layout_width="237dp"
-                android:layout_height="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:srcCompat="@drawable/ic_default_plant"
+                android:scaleType="center"
                 android:id="@+id/imgViewPlant"
-                android:layout_weight="0.69" />
+                android:layout_weight="1.5"/>
 
             <ImageButton
                 android:layout_gravity="center"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 app:srcCompat="@drawable/ic_add_image"
+                android:alpha="0.75"
                 android:id="@+id/btnAddImage"
                 android:onClick="onClickCamera"
                 />
@@ -114,8 +124,8 @@
             android:id="@+id/btnSavePlant"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-
             android:layout_weight="1" />
+
         <Button
             android:text="Update"
             android:id="@+id/btnUpdatePlant"
@@ -123,7 +133,15 @@
             android:layout_height="50dp"
             android:visibility="invisible"
             android:layout_weight="1" />
+        <Button
+            android:text="Show Stats"
+            android:id="@+id/btnShowStats"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:visibility="invisible"
+            android:layout_weight="1" />
     </LinearLayout>
-
 </android.support.design.widget.CoordinatorLayout>
+
     </ScrollView>
+</FrameLayout>

@@ -6,7 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -41,6 +47,7 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
 
     public static class ViewHolder{
 
+        public ImageView plantImage;
         public TextView plantName;
         public TextView plantId;
 
@@ -54,30 +61,35 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
         Plants dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         PlantListViewAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
+        if (dataModel != null) {
+            final View result;
 
-        final View result;
+            if (convertView == null) {
 
-        if (convertView == null) {
+                viewHolder = new PlantListViewAdapter.ViewHolder();
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(R.layout.plant_list_view, parent, false);
+                viewHolder.plantName = (TextView) convertView.findViewById(R.id.plName);
+                viewHolder.plantId = (TextView) convertView.findViewById(R.id.plId);
+                viewHolder.plantImage = (ImageView) convertView.findViewById(R.id.plImage);
+                result = convertView;
 
-            viewHolder = new PlantListViewAdapter.ViewHolder();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.plant_list_view, parent, false);
-            viewHolder.plantName = (TextView) convertView.findViewById(R.id.plName);
-            viewHolder.plantId = (TextView) convertView.findViewById(R.id.plId);
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (PlantListViewAdapter.ViewHolder) convertView.getTag();
+                result = convertView;
+            }
 
-            result=convertView;
+            viewHolder.plantName.setText(dataModel.getPlantName());
+            viewHolder.plantId.setText(dataModel.getPlantId());
 
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (PlantListViewAdapter.ViewHolder) convertView.getTag();
-            result=convertView;
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference plantImagesRef = storage.getReference(dataModel.getPlantImagePath());
+            Glide.with(getContext())
+                    .using(new FirebaseImageLoader())
+                    .load(plantImagesRef)
+                    .into(viewHolder.plantImage);
         }
-
-
-        viewHolder.plantName.setText(dataModel.getPlantName());
-        viewHolder.plantId.setText(dataModel.getPlantId());
-
-        // Return the completed view to render on screen
         return convertView;
     }
 }

@@ -3,6 +3,7 @@ package pervasive.iu.com.greenthumb.MyPlants;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -58,10 +59,10 @@ public class plant extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //return inflater.inflate(R.layout.plant,container,false);
+
         View view = inflater.inflate(R.layout.activity_main_plant, container, false);
 
-        btnAddPlant = (ImageButton) view.findViewById(R.id.btnAdd);
+        btnAddPlant = (ImageButton) view.findViewById(R.id.fabAdd);
 
         btnAddPlant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +94,8 @@ public class plant extends Fragment {
                     plantInfo.setLocation(plantInfoMap.get("location").toString());
                     plantInfo.setPlantImagePath(plantInfoMap.get("plantImagePath").toString());
                     plantInfo.setPlantId(plantInfoMap.get("plantId").toString());
+                    HashMap<String, String> values = (HashMap<String, String>) plantInfoMap.get("thresholdValues");
+                    plantInfo.setThresholdValues(values);
                     plantList.add(plantInfo);
                 }
 
@@ -107,15 +110,12 @@ public class plant extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                         Plants plantInfo = (Plants) parent.getItemAtPosition(position);
-                        System.out.println("Inside onclicklistener" + plantInfo.getPlantName());
 
                         Intent myIntent = new Intent(getActivity(), AddPlantActivity.class);
                         myIntent.putExtra("plantInfo", plantInfo);
                         startActivity(myIntent);
                     }
                 });
-
-
             }
 
             @Override

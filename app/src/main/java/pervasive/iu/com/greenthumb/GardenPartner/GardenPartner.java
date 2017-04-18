@@ -140,8 +140,6 @@ public class GardenPartner extends Fragment{
 
                     }
                 });
-
-
             }
 
             @Override

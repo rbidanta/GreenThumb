@@ -34,8 +34,8 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".GardenPartner.RegisterGarden" />
 <activity android:name=".MyPlants.AddPlantActivity">
-
 </activity>
+<activity android:name=".MyPlants.PlantStats"></activity>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.greenthumb.android.fileprovider"
