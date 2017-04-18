@@ -17,12 +17,15 @@
             android:layout_width="83dp"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:scaleType="center"
-                android:id="@+id/plImage" />
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/plImage"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_below="@+id/view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                app:border_color="#FFFFFF"
+                app:border_width="3dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -35,11 +38,10 @@
                 android:id="@+id/plName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
                 android:fontFamily="sans-serif"
                 android:textColor="@android:color/black"
-                android:paddingTop="10dp"
-                android:textSize="12pt" />
+                android:paddingTop="35dp"
+                android:textSize="10pt" />
 
             <TextView
                 android:id="@+id/plId"

@@ -47,7 +47,7 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
 
     public static class ViewHolder{
 
-        public ImageView plantImage;
+        public de.hdodenhof.circleimageview.CircleImageView plantImage;
         public TextView plantName;
         public TextView plantId;
 
@@ -61,6 +61,7 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
         Plants dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         PlantListViewAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
+
         if (dataModel != null) {
             final View result;
 
@@ -71,7 +72,7 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
                 convertView = inflater.inflate(R.layout.plant_list_view, parent, false);
                 viewHolder.plantName = (TextView) convertView.findViewById(R.id.plName);
                 viewHolder.plantId = (TextView) convertView.findViewById(R.id.plId);
-                viewHolder.plantImage = (ImageView) convertView.findViewById(R.id.plImage);
+                viewHolder.plantImage = (de.hdodenhof.circleimageview.CircleImageView ) convertView.findViewById(R.id.plImage);
                 result = convertView;
 
                 convertView.setTag(viewHolder);
@@ -85,6 +86,7 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference plantImagesRef = storage.getReference(dataModel.getPlantImagePath());
+
             Glide.with(getContext())
                     .using(new FirebaseImageLoader())
                     .load(plantImagesRef)
