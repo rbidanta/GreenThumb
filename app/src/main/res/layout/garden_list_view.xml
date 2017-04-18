@@ -1,38 +1,65 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp">
 
-    <TextView
-        android:id="@+id/glname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/black" />
-
-
-    <TextView
-        android:id="@+id/guniqeid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/glname"
-        android:layout_marginTop="5dp"
-        android:textColor="@android:color/black"
-        android:visibility="invisible"/>
-
-    <!--<ImageView
-        android:id="@+id/item_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@android:drawable/ic_dialog_info" />
 
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/garden_thumbnail"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:border_color="#FFFFFF"
+            app:border_width="3dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:layout_marginLeft="5dp">
+
+
+            <TextView
+                android:id="@+id/glname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@android:color/black"
+                android:textSize="15dp"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:id="@+id/gaddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="10dp"
+                android:textColor="@android:color/black"
+                android:layout_weight="0.00" />
+
+            <TextView
+                android:id="@+id/guniqeid"
+                android:layout_width="66dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@android:color/black"
+                android:visibility="gone" />
+
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+    <!--<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
@@ -55,5 +82,3 @@
             android:textStyle="bold" />
 
     </LinearLayout>-->
-
-</RelativeLayout>
