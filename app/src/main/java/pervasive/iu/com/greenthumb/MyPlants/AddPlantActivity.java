@@ -275,7 +275,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         LayoutInflater inflater = getLayoutInflater();
         View convertView = (View) inflater.inflate(R.layout.activity_plant_stats, null);
         TextView tvPlantName = (TextView) convertView.findViewById(R.id.txtPlantName);
-        ImageView ivPlant = (ImageView) convertView.findViewById(R.id.imgViewPlant);
+        de.hdodenhof.circleimageview.CircleImageView ivPlant = (de.hdodenhof.circleimageview.CircleImageView) convertView.findViewById(R.id.imgViewPlant);
         lvStats = (ListView) convertView.findViewById(R.id.statList);
         plantImagesRef = storage.getReference(plantImagePath);
 
