@@ -12,7 +12,14 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.content.DialogInterface;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -28,6 +35,9 @@ public class GardenListViewAdapter extends ArrayAdapter<GardenInfo> implements D
 
     private ArrayList<GardenInfo> dataSet;
     Context mContext;
+
+
+
 
 
 
@@ -51,7 +61,9 @@ public class GardenListViewAdapter extends ArrayAdapter<GardenInfo> implements D
     public static class ViewHolder{
 
         public TextView gardenName;
+        public TextView gardenAddress;
         public TextView gardenId;
+        public de.hdodenhof.circleimageview.CircleImageView gardenImageView;
 
 
 
@@ -73,9 +85,9 @@ public class GardenListViewAdapter extends ArrayAdapter<GardenInfo> implements D
             convertView = inflater.inflate(R.layout.garden_list_view, parent, false);
             viewHolder.gardenName = (TextView) convertView.findViewById(R.id.glname);
             viewHolder.gardenId = (TextView) convertView.findViewById(R.id.guniqeid);
-            /*viewHolder.txtVersion = (TextView) convertView.findViewById(R.id.version_number);
-            viewHolder.info = (ImageView) convertView.findViewById(R.id.item_info);
-*/
+            viewHolder.gardenAddress = (TextView) convertView.findViewById(R.id.gaddress);
+            viewHolder.gardenImageView = (de.hdodenhof.circleimageview.CircleImageView) convertView.findViewById(R.id.garden_thumbnail);
+
             result=convertView;
 
             convertView.setTag(viewHolder);
@@ -84,15 +96,23 @@ public class GardenListViewAdapter extends ArrayAdapter<GardenInfo> implements D
             result=convertView;
         }
 
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference gardenStorageRef = storage.getReference(dataModel.getgFireBasePath().toString());
+
 
         viewHolder.gardenName.setText(dataModel.getgName());
         viewHolder.gardenId.setText(dataModel.getgId());
+        viewHolder.gardenAddress.setText(dataModel.getgAddress());
+
+        Glide.with(getContext())
+                .using(new FirebaseImageLoader())
+                .load(gardenStorageRef)
+                .into(viewHolder.gardenImageView);
+
 
         // Return the completed view to render on screen
         return convertView;
     }
-
-
 
 
 }

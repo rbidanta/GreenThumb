@@ -126,6 +126,7 @@
                 app:srcCompat="@drawable/ic_default_plant"
                 android:id="@+id/gardenImage"
                 android:layout_weight="0.98"
+                android:scaleType="center"
                 android:visibility="invisible"/>
 
             <Button

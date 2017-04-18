@@ -72,6 +72,8 @@ public class RegisterGarden extends AppCompatActivity {
 
     private Uri gardenImageUri = null;
 
+    private Bitmap bitmap;
+
 
     private String mCurrentPhotoPath;
 
@@ -220,10 +222,6 @@ public class RegisterGarden extends AppCompatActivity {
         GardenInfo gInfo = new GardenInfo(gId, gardenname, gardenaddress, user.getUid(), loggedInUserInfo.getPhone(), null,gardenImageUri.getPath(),gardenImagesRef.getPath());
 
         dbreference.child(gId).setValue(gInfo);
-
-        dbreference.child(gId).child("gMembers").child("User1").setValue(true);
-        dbreference.child(gId).child("gMembers").child("User2").setValue(true);
-        dbreference.child(gId).child("gMembers").child("User3").setValue(true);
 
 
         //Storing Image on Firebase
@@ -374,7 +372,7 @@ public class RegisterGarden extends AppCompatActivity {
         //bmOptions.inPurgeable = true;
 
 		/* Decode the JPEG file into a Bitmap */
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
 
 		/* Associate the Bitmap to the ImageView */
         mImageView.setImageBitmap(bitmap);
@@ -418,7 +416,7 @@ public class RegisterGarden extends AppCompatActivity {
     private void putImagetoFireBase(){
         mImageView.setDrawingCacheEnabled(true);
         mImageView.buildDrawingCache();
-        Bitmap bitmap = mImageView.getDrawingCache();
+        //bitmap = mImageView.getDrawingCache();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBdata = baos.toByteArray();

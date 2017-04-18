@@ -10,8 +10,8 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -109,7 +109,8 @@
                 android:layout_height="195dp"
                 app:srcCompat="@drawable/ic_default_plant"
                 android:id="@+id/gardenOImage"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:scaleType="center"/>
 
 
 
@@ -131,27 +132,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+
             >
 
             <Button
                 android:text="@string/update_info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:id="@+id/update_info"
                 android:background="@color/colorPrimaryDark"
                 android:onClick="updateInfo"
                 android:visibility="invisible"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="10dp"/>
 
             <Button
                 android:text="@string/view_requests"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:background="@color/colorPrimaryDark"
                 android:id="@+id/view_requests"
                 android:visibility="invisible"
                 android:textColor="@android:color/white"
-                android:layout_marginBottom="5dp"/>
+                />
 
        </LinearLayout>
 
