@@ -3,10 +3,12 @@ package pervasive.iu.com.greenthumb.Login;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,7 +27,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText login_email;
     private EditText login_password;
     private TextView register_link;
-
+    private TextInputLayout inputLayoutEmail, inputLayoutPassword;
     private FirebaseAuth firebase_auth;
     private ProgressDialog progressDialog;
 
@@ -48,7 +50,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login_password=(EditText) findViewById(R.id.password);
         login_button=(Button) findViewById(R.id.login);
         register_link=(TextView) findViewById(R.id.login_here);
-
+        inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
+        inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_pass);
         login_button.setOnClickListener(this);
         register_link.setOnClickListener(this);
     }
@@ -57,12 +60,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String email = login_email.getText().toString().trim();
 
         String password = login_password.getText().toString().trim();
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "Please enter your email address", Toast.LENGTH_SHORT).show();
-        }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Please enter your password", Toast.LENGTH_SHORT).show();
-        }
 
         progressDialog.setMessage("Logging in......");
         progressDialog.show();
@@ -75,6 +72,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 {
                     finish();
                     startActivity(new Intent(getApplicationContext(),Navigation.class));
+                }else{
+                    Toast.makeText(getApplicationContext(), "Invalid email id and password. Please, try again", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -84,12 +83,47 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if(v==login_button)
         {
+           if(!validateEmail()){
+               return;
+           }
+
+           if(!validatePassword()){
+               return;
+           }
            userLogin();
         }
         if(v==register_link)
         {
            finish();
             startActivity(new Intent(this,MainActivity.class));
+        }
+    }
+
+    private boolean validateEmail() {
+        if (login_email.getText().toString().trim().isEmpty()) {
+            inputLayoutEmail.setError(getString(R.string.Err_Email));
+            requestFocus(login_email);
+            return false;
+        } else {
+            inputLayoutEmail.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private boolean validatePassword() {
+        if (login_password.getText().toString().trim().isEmpty()) {
+            inputLayoutPassword.setError(getString(R.string.Err_Password));
+            requestFocus(login_password);
+            return false;
+        } else {
+            inputLayoutPassword.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 }
