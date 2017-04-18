@@ -8,7 +8,9 @@ import android.widget.AdapterView;
 import android.content.DialogInterface;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,18 +29,21 @@ public class MemberListViewAdapter extends ArrayAdapter<MemberInfo> implements D
 
 
     private ArrayList dataSet;
+    private ArrayList selectedMember;
+
     Context mContext;
 
 
 
 
 
-    public MemberListViewAdapter(ArrayList data, Context context) {
+    public MemberListViewAdapter(ArrayList data, Context context,ArrayList selectedMember) {
 
         super(context, R.layout.member_list_view, data);
 
         this.dataSet = data;
         this.mContext=context;
+        this.selectedMember=selectedMember;
 
     }
 
@@ -62,7 +67,7 @@ public class MemberListViewAdapter extends ArrayAdapter<MemberInfo> implements D
         // Get the data item for this position
         MemberInfo dataModel = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
-        MemberListViewAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
+        final MemberListViewAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
 
         final View result;
 
@@ -78,6 +83,29 @@ public class MemberListViewAdapter extends ArrayAdapter<MemberInfo> implements D
             viewHolder.info = (ImageView) convertView.findViewById(R.id.item_info);
 */
             result=convertView;
+
+
+            viewHolder.selectMember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+
+                    if(isChecked) {
+                        selectedMember.add(viewHolder.memberId.getText().toString());
+                        System.out.println("--------Checked-----"+ selectedMember);
+
+
+
+                    }else{
+                        if(selectedMember.contains(viewHolder.memberId.getText().toString())){
+                            selectedMember.remove(viewHolder.memberId.getText().toString());
+                            System.out.println("--------Un Checked-----"+selectedMember);
+                        }
+                    }
+                }
+            });
+
 
             convertView.setTag(viewHolder);
         } else {

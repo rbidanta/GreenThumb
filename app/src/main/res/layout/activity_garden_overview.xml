@@ -5,15 +5,13 @@
     android:id="@+id/activity_garden_overview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pervasive.iu.com.greenthumb.GardenPartner.GardenOverview">
 
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -123,6 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout"
             android:layout_centerHorizontal="true"
+            android:background="@color/colorPrimary"
             android:id="@+id/req_memship"
             android:visibility="gone" />
 
@@ -135,23 +134,24 @@
             >
 
             <Button
-            android:text="@string/update_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/linearLayout"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/update_info"
-            android:onClick="updateInfo"
-            android:visibility="invisible" />
+                android:text="@string/update_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/update_info"
+                android:background="@color/colorPrimaryDark"
+                android:onClick="updateInfo"
+                android:visibility="invisible"
+                android:textColor="@android:color/white"/>
 
             <Button
                 android:text="@string/view_requests"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayout"
-                android:layout_centerHorizontal="true"
+                android:background="@color/colorPrimaryDark"
                 android:id="@+id/view_requests"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="5dp"/>
 
        </LinearLayout>
 
