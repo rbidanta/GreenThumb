@@ -14,7 +14,6 @@ public class GardenInfo implements Serializable {
     public String gAddress;
     public String gOwner;
     public String gOwnerPhone;
-    //public String gMembers;
     public List<String> gMembers;
     public String gImagePath;
     public String gFireBasePath;

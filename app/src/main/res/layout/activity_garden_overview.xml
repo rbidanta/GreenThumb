@@ -138,7 +138,7 @@
             <Button
                 android:text="@string/update_info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:id="@+id/update_info"
                 android:background="@color/colorPrimaryDark"
                 android:onClick="updateInfo"
@@ -149,7 +149,7 @@
             <Button
                 android:text="@string/view_requests"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:background="@color/colorPrimaryDark"
                 android:id="@+id/view_requests"
                 android:visibility="invisible"

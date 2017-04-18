@@ -69,9 +69,6 @@ public class GardenPartner extends Fragment{
                 startActivity(new Intent(getActivity(), RegisterGarden.class));
             }
         });
-
-
-
         return view;
     }
 
@@ -101,7 +98,6 @@ public class GardenPartner extends Fragment{
                         ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
                     }
 
-                    
                     gardenInfoList.add(ginfo);
 
 
@@ -133,8 +129,6 @@ public class GardenPartner extends Fragment{
 
                     }
                 });
-
-
             }
 
             @Override
