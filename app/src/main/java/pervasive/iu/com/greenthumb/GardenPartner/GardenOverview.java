@@ -2,6 +2,7 @@ package pervasive.iu.com.greenthumb.GardenPartner;
 
 
 import android.content.DialogInterface;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -85,7 +86,7 @@ public class GardenOverview extends Fragment {
     }
 
 
-
+    DatabaseReference gardenReference;
     List<String> memberslist;
 
     @Nullable
@@ -200,19 +201,25 @@ public class GardenOverview extends Fragment {
         });
 
 
-        memberslist = new ArrayList<String>();
 
-        DatabaseReference gardenReference = FirebaseDatabase.getInstance().getReference("gardens");
+
+        gardenReference = FirebaseDatabase.getInstance().getReference("gardens");
 
         gardenReference.child(gardenId).child("gMembers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                memberslist = new ArrayList<String>();
+
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
 
-                    if(Boolean.getBoolean(ds.getValue().toString()) == false){
+                    System.out.println("ds.getValue:----"+ds.getValue().toString());
+
+                    if(ds.getValue().toString().equalsIgnoreCase("false")){
 
                         memberslist.add(ds.getKey());
+                    }else{
+                        memberslist.remove(ds.getKey());
                     }
                 }
 
@@ -233,7 +240,12 @@ public class GardenOverview extends Fragment {
 
                 AlertDialog.Builder builderSingle = new AlertDialog.Builder(getActivity());
                 builderSingle.setIcon(R.mipmap.ic_new_member_req);
-                builderSingle.setTitle("Pending Requests:-");
+
+                if(!memberslist.isEmpty()) {
+                    builderSingle.setTitle("Pending Requests:-");
+                }else{
+                    builderSingle.setTitle("No Pending Requests:-");
+                }
 
 
                 Bundle bundle = new Bundle();
@@ -250,29 +262,45 @@ public class GardenOverview extends Fragment {
 
 
                 }
-
+                memberslist.clear();
 
                 System.out.println("memberObjectList----------"+memberObjectList);
 
                 mlistView = (ListView) memberListView.findViewById(R.id.newMemberList);
 
 
-                final MemberListViewAdapter memberAdapter = new MemberListViewAdapter(memberObjectList,getContext());
+                final ArrayList<String> selectedMembers = new ArrayList<String>();
+
+                final MemberListViewAdapter memberAdapter = new MemberListViewAdapter(memberObjectList,getContext(),selectedMembers);
 
                 mlistView.setAdapter(memberAdapter);
 
 
+                System.out.println("selectedMembers----------"+selectedMembers);
 
 
-
-
-
-
-
-                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                builderSingle.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                    }
+                });
+
+                builderSingle.setPositiveButton("Approve", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.out.println("Approved");
+
+                        System.out.println("Selected Members: ======== "+selectedMembers);
+
+
+
+                        for (String members : selectedMembers ) {
+
+                            gardenReference.child(gardenId).child("gMembers").child(members).setValue(Boolean.TRUE);
+
+                        }
+
                     }
                 });
 

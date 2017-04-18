@@ -126,6 +126,7 @@
                 app:srcCompat="@drawable/ic_default_plant"
                 android:id="@+id/gardenImage"
                 android:layout_weight="0.98"
+                android:scaleType="center"
                 android:visibility="invisible"/>
 
             <Button
@@ -135,9 +136,10 @@
                 android:onClick="onRegister"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorPrimaryDark"
                 android:layout_marginTop="40dp"
-                android:textColor="@android:color/white"/>
+                android:textColor="@android:color/white"
+                />
 
         </LinearLayout>
     </android.support.design.widget.CoordinatorLayout>
