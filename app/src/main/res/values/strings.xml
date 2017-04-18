@@ -46,4 +46,9 @@
     <string name = "Err_Kit_Num">Please, enter the kit number</string>
     <string name = "Err_Not_Time">Please, enter notification time</string>
     <string name = "Err_Plant_Image">Please, add an image of your plant</string>
+
+    <!--Strings for login activity-->
+    <string name="Err_Email">Please, enter a valid email address</string>
+    <string name = "Err_Password">Please, enter the password</string>
+
 </resources>

@@ -48,7 +48,7 @@ public class plant extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("My plant");
+        getActivity().setTitle("My Plants");
         DatabaseReference def = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         plantReference = def.child(user.getUid()).child("Plants");
@@ -110,7 +110,6 @@ public class plant extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                         Plants plantInfo = (Plants) parent.getItemAtPosition(position);
-
                         Intent myIntent = new Intent(getActivity(), AddPlantActivity.class);
                         myIntent.putExtra("plantInfo", plantInfo);
                         startActivity(myIntent);

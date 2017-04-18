@@ -2,8 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="30dp"
-    android:padding="10dp"
+    android:layout_margin="20dp"
+    android:padding="5dp"
     android:background="#FFFFFF">
 
     <LinearLayout
@@ -23,7 +23,6 @@
                 android:layout_height="70dp"
                 android:layout_below="@+id/view"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
                 app:border_color="#FFFFFF"
                 app:border_width="3dp" />
         </LinearLayout>
@@ -40,7 +39,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif"
                 android:textColor="@android:color/black"
-                android:paddingTop="35dp"
+                android:paddingTop="25dp"
                 android:textSize="10pt" />
 
             <TextView
@@ -48,8 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/plName"
-                android:layout_marginTop="5dp"
-                android:visibility="invisible"/>
+                android:visibility="gone"/>
         </LinearLayout>
     </LinearLayout>
 

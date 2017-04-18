@@ -316,6 +316,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 
         return true;
     }
+
     private boolean validateNotTime() {
         if (editTextTime.getText().toString().trim().isEmpty()) {
             inputLayoutNotTime.setError(getString(R.string.Err_Not_Time));
