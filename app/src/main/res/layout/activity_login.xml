@@ -18,9 +18,6 @@
         android:layout_height="wrap_content"
         android:weightSum="1">
 
-
-
-
         <TextView
             android:text="User Login"
             android:layout_width="119dp"
