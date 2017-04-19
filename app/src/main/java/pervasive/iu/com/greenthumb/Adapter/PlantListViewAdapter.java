@@ -50,9 +50,6 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
         public de.hdodenhof.circleimageview.CircleImageView plantImage;
         public TextView plantName;
         public TextView plantId;
-
-
-
     }
 
     @Override

@@ -3,6 +3,8 @@ package pervasive.iu.com.greenthumb;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,8 +19,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import pervasive.iu.com.greenthumb.GardenPartner.GardenOverview;
 import pervasive.iu.com.greenthumb.Login.LoginActivity;
 import pervasive.iu.com.greenthumb.Login.Profile;
+import pervasive.iu.com.greenthumb.Login.my_profile;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private Button register_button;
@@ -79,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     finish();
                     startActivity(new Intent(getApplicationContext(),Profile.class));
+
                 }
                 else
                 {
