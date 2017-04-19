@@ -4,6 +4,6 @@
     <item android:state_pressed="true"
         android:drawable="@drawable/ic_addfab" />
     <item android:state_focused="true"
-        android:drawable="@drawable/ic_addfab" />
+        android:drawable="@drawable/ic_addfab"/>
     <item android:drawable="@drawable/ic_addfab" />
 </selector>

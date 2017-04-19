@@ -15,19 +15,22 @@ public class saveInfo {
     public String location;
     public String phone;
     public List<Plants> Plants;
+    public String emailId;
+
+
 
     public saveInfo()
     {
 
     }
 
-    public saveInfo(String firstname, String lastname, String address, String location, String phone) {
+    public saveInfo(String firstname, String lastname, String address, String location, String phone,String emailId) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
         this.location = location;
         this.phone = phone;
-     //   this.Plants = plants;
+        this.emailId = emailId;
     }
 
     public String getFirstname() {
@@ -68,5 +71,14 @@ public class saveInfo {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 }

@@ -229,6 +229,8 @@ public class RegisterGarden extends AppCompatActivity {
 
         addTasksToGarden(gId);
 
+        createLeaderBoard(gId);
+
     }
 
 
@@ -493,6 +495,15 @@ public class RegisterGarden extends AppCompatActivity {
 
             }
         });
+
+
+    }
+
+
+    private void createLeaderBoard(final String gardenId){
+
+        DatabaseReference memberreference = FirebaseDatabase.getInstance().getReference("leaderboard");
+        memberreference.child(gardenId).child(firebaseAuth.getCurrentUser().getUid()).setValue(Integer.parseInt("100"));
 
 
     }
