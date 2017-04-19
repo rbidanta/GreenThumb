@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import pervasive.iu.com.greenthumb.DBHandler.saveInfo;
 
@@ -118,6 +119,8 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         String address_val = address.getText().toString().trim();
         String phone_num = phone.getText().toString().trim();
 
+        String token = FirebaseInstanceId.getInstance().getToken();
+
 
         if (first_name.isEmpty()) {
             Toast.makeText(this, "Please Enter First Name", Toast.LENGTH_LONG).show();
@@ -130,7 +133,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         } else {
 
 
-            saveInfo saveinf = new saveInfo(first_name, last_name, location_val, address_val, phone_num, user.getEmail());
+            saveInfo saveinf = new saveInfo(first_name, last_name, location_val, address_val, phone_num, user.getEmail(),token);
             FirebaseUser user = firebaseAuth.getCurrentUser();
 
             try {

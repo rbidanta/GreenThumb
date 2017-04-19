@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,6 +85,10 @@ public class GardenPartner extends Fragment{
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
 
+        String token = FirebaseInstanceId.getInstance().getToken();
+
+        System.out.println("Token=================="+token);
+
         gardenReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -121,6 +126,9 @@ public class GardenPartner extends Fragment{
                     } else {
 
                         if (null == gInfoMap.get("gMembers")) {
+
+                            memberslist.add(ginfo.getgOwner());
+                            memberslist.add(String.valueOf(false));
 
                         } else {
                             Map<String, Boolean> memberMap = (HashMap) gInfoMap.get("gMembers");

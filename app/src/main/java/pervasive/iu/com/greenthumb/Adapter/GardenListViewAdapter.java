@@ -110,21 +110,24 @@ public class GardenListViewAdapter extends ArrayAdapter<GardenInfo> implements D
 
         List<String> members = dataModel.getgMembers();
 
-       if(members.get(1).equalsIgnoreCase("owner")){
+        if(!members.isEmpty()) {
 
-           Glide.with(getContext())
-                   .load(R.mipmap.ic_owner)
-                   .into(viewHolder.statusView);
+            if (members.get(1).equalsIgnoreCase("owner")) {
 
-       }else if (members.get(1).equalsIgnoreCase("false")){
-           Glide.with(getContext())
-                   .load(R.mipmap.ic_nonmember)
-                   .into(viewHolder.statusView);
-       }else if(members.get(1).equalsIgnoreCase("true")){
-           Glide.with(getContext())
-                   .load(R.mipmap.ic_grantedmember)
-                   .into(viewHolder.statusView);
-       }
+                Glide.with(getContext())
+                        .load(R.mipmap.ic_owner)
+                        .into(viewHolder.statusView);
+
+            } else if (members.get(1).equalsIgnoreCase("false")) {
+                Glide.with(getContext())
+                        .load(R.mipmap.ic_nonmember)
+                        .into(viewHolder.statusView);
+            } else if (members.get(1).equalsIgnoreCase("true")) {
+                Glide.with(getContext())
+                        .load(R.mipmap.ic_grantedmember)
+                        .into(viewHolder.statusView);
+            }
+        }
 
 
         Glide.with(getContext())

@@ -2,6 +2,7 @@ package pervasive.iu.com.greenthumb.Login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import pervasive.iu.com.greenthumb.MainActivity;
 import pervasive.iu.com.greenthumb.R;
@@ -38,9 +42,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if(firebase_auth.getCurrentUser()!=null)
         {
+
+            String token = FirebaseInstanceId.getInstance().getToken();
+
+            DatabaseReference userref = FirebaseDatabase.getInstance().getReference(firebase_auth.getCurrentUser().getUid());
+
+            userref.child("token").child(token);
+
             finish();
             startActivity(new Intent(getApplicationContext(),Navigation.class));
         }
+
+
 
         progressDialog=new ProgressDialog(this);
 
@@ -73,6 +86,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 progressDialog.dismiss();
                 if(task.isSuccessful())
                 {
+
+                    String token = FirebaseInstanceId.getInstance().getToken();
+
+                    DatabaseReference userref = FirebaseDatabase.getInstance().getReference(firebase_auth.getCurrentUser().getUid());
+
+                    userref.child("token").child(token);
                     finish();
                     startActivity(new Intent(getApplicationContext(),Navigation.class));
                 }

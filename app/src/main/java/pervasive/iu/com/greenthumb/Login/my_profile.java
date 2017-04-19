@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,8 @@ public class my_profile extends Fragment implements View.OnClickListener{
         phone=(EditText) view.findViewById(R.id.phone);
         buttonsave=(Button) view.findViewById(R.id.save);
 
+
+
         if(firebaseAuth.getCurrentUser()==null)
         {
             getActivity().finish();
@@ -131,7 +134,7 @@ public class my_profile extends Fragment implements View.OnClickListener{
         String address_val=address.getText().toString().trim();
         String phone_num=phone.getText().toString().trim();
 
-
+        String token = FirebaseInstanceId.getInstance().getToken();
 
 
         if(first_name.isEmpty()){
@@ -145,7 +148,7 @@ public class my_profile extends Fragment implements View.OnClickListener{
         }else{
 
 
-            saveInfo saveinf=new saveInfo(first_name,last_name,location_val,address_val,phone_num,user.getEmail());
+            saveInfo saveinf=new saveInfo(first_name,last_name,location_val,address_val,phone_num,user.getEmail(),token);
             FirebaseUser user=firebaseAuth.getCurrentUser();
 
             try {

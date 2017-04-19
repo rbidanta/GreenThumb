@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import pervasive.iu.com.greenthumb.GardenPartner.GardenOverview;
 import pervasive.iu.com.greenthumb.Login.LoginActivity;
@@ -81,6 +84,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 progressDialog.dismiss();
                 if(task.isSuccessful())
                 {
+
+                    String token = FirebaseInstanceId.getInstance().getToken();
+
+                    DatabaseReference userref = FirebaseDatabase.getInstance().getReference(firebase_auth.getCurrentUser().getUid());
+
+                    userref.child("token").setValue(token);
+
                     finish();
                     startActivity(new Intent(getApplicationContext(),Profile.class));
 

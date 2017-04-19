@@ -16,7 +16,7 @@ public class saveInfo {
     public String phone;
     public List<Plants> Plants;
     public String emailId;
-
+    public String token;
 
 
     public saveInfo()
@@ -24,13 +24,14 @@ public class saveInfo {
 
     }
 
-    public saveInfo(String firstname, String lastname, String address, String location, String phone,String emailId) {
+    public saveInfo(String firstname, String lastname, String address, String location, String phone,String emailId, String token) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
         this.location = location;
         this.phone = phone;
         this.emailId = emailId;
+        this.token = token;
     }
 
     public String getFirstname() {
@@ -80,5 +81,13 @@ public class saveInfo {
 
     public void setEmailId(String emailId) {
         this.emailId = emailId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
