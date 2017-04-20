@@ -200,7 +200,11 @@ public class GardenPartner extends Fragment{
     }
 
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("Garden Partner");
+    }
 
     @Override
     public void onOptionsMenuClosed(Menu menu) {
