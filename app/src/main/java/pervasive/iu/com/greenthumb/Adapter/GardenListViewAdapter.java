@@ -126,6 +126,10 @@ public class GardenListViewAdapter extends ArrayAdapter<GardenInfo> implements D
                 Glide.with(getContext())
                         .load(R.mipmap.ic_grantedmember)
                         .into(viewHolder.statusView);
+            }else{
+                Glide.with(getContext())
+                        .load(R.mipmap.ic_nonmember)
+                        .into(viewHolder.statusView);
             }
         }
 
