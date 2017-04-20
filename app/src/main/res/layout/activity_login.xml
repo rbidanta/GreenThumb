@@ -47,7 +47,11 @@
                 android:id="@+id/login"
                 android:text="login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="#FFFFFF"
+                android:layout_marginTop="10dp"/>
+
         </android.support.design.widget.TextInputLayout>
 
         <LinearLayout

@@ -56,7 +56,7 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
     private Button buttonsave;
     private FirebaseUser user;
 
-    private ImageView userImg;
+    private de.hdodenhof.circleimageview.CircleImageView userImg;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference userStorageRef = storage.getReference("user");
     private StorageReference userImageRef;
@@ -118,10 +118,10 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
         address = (EditText) findViewById(R.id.address);
         phone = (EditText) findViewById(R.id.phone);
         buttonsave = (Button) findViewById(R.id.save);
-        userImg = (ImageView) findViewById(R.id.imgProfile);
+        userImg = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.imgProfile);
         user = firebaseAuth.getCurrentUser();
 
-        profileview = (TextView) findViewById(R.id.profile_view);
+       // profileview = (TextView) findViewById(R.id.profile_view);
         profileview.setText(user.getEmail());
         logout_button = (Button) findViewById(R.id.logout_but);
 

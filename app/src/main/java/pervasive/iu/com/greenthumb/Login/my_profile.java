@@ -65,7 +65,7 @@ public class my_profile extends Fragment implements View.OnClickListener{
     private Button buttonsave;
     private FirebaseUser user;
 
-    private ImageView userImg;
+    private de.hdodenhof.circleimageview.CircleImageView userImg;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference userStorageRef = storage.getReference("user");
     private StorageReference userImageRef;
@@ -110,7 +110,7 @@ public class my_profile extends Fragment implements View.OnClickListener{
         address=(EditText) view.findViewById(R.id.address);
         phone=(EditText) view.findViewById(R.id.phone);
         buttonsave=(Button) view.findViewById(R.id.save);
-        userImg = (ImageView) view.findViewById(R.id.imgProfile);
+        userImg = (de.hdodenhof.circleimageview.CircleImageView) view.findViewById(R.id.imgProfile);
         btnGallery = (ImageButton) view.findViewById(R.id.btnAddGalleryImage);
         btnCamera = (ImageButton) view.findViewById(R.id.btnAddImage);
         btnCamera.setVisibility(view.GONE);
@@ -119,46 +119,49 @@ public class my_profile extends Fragment implements View.OnClickListener{
         {
             getActivity().finish();
             startActivity(new Intent(getActivity(),LoginActivity.class));
-        } else{
+        } else {
+            try {
+                DatabaseReference dbref = FirebaseDatabase.getInstance().getReference(user.getUid());
+                dbref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-            DatabaseReference dbref = FirebaseDatabase.getInstance().getReference(user.getUid());
-            dbref.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    for(DataSnapshot ds : dataSnapshot.getChildren()){
-                        if(ds.getKey().equalsIgnoreCase("firstname")){
-                            firstname.setText(ds.getValue().toString());
-                        }else if(ds.getKey().equalsIgnoreCase("lastname")){
-                            lastname.setText(ds.getValue().toString());
-                        }else if(ds.getKey().equalsIgnoreCase("location")){
-                            location.setText(ds.getValue().toString());
-                        }else if(ds.getKey().equalsIgnoreCase("address")){
-                            address.setText(ds.getValue().toString());
-                        }else if(ds.getKey().equalsIgnoreCase("phone")){
-                            phone.setText(ds.getValue().toString());
-                        }else if(ds.getKey().equalsIgnoreCase("UserImagePath")){
-                            mCurrentPhotoPath = ds.getValue().toString();
-                            userImageRef = storage.getReference(mCurrentPhotoPath);
-                            Glide.with(getContext())
-                                    .using(new FirebaseImageLoader())
-                                    .load(userImageRef)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(userImg);
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            if (ds.getKey().equalsIgnoreCase("firstname")) {
+                                firstname.setText(ds.getValue().toString());
+                            } else if (ds.getKey().equalsIgnoreCase("lastname")) {
+                                lastname.setText(ds.getValue().toString());
+                            } else if (ds.getKey().equalsIgnoreCase("location")) {
+                                location.setText(ds.getValue().toString());
+                            } else if (ds.getKey().equalsIgnoreCase("address")) {
+                                address.setText(ds.getValue().toString());
+                            } else if (ds.getKey().equalsIgnoreCase("phone")) {
+                                phone.setText(ds.getValue().toString());
+                            } else if (ds.getKey().equalsIgnoreCase("UserImagePath")) {
+                                mCurrentPhotoPath = ds.getValue().toString();
+                                userImageRef = storage.getReference(mCurrentPhotoPath);
+                                Glide.with(getContext())
+                                        .using(new FirebaseImageLoader())
+                                        .load(userImageRef)
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                        .skipMemoryCache(true)
+                                        .into(userImg);
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        profileview=(TextView) view.findViewById(R.id.profile_view);
-        profileview.setText(user.getEmail());
+      //  profileview=(TextView) view.findViewById(R.id.profile_view);
+      //  profileview.setText(user.getEmail());
         logout_button=(Button) view.findViewById(R.id.logout_but);
 
         logout_button.setOnClickListener(this);

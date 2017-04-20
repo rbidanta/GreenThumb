@@ -47,7 +47,7 @@ public class Navigation extends AppCompatActivity
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference userStorageRef = storage.getReference("user");
     private StorageReference userImageRef;
-    private String userName, mCurrentPhotoPath;
+    private String userName="", mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
