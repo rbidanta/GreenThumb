@@ -58,6 +58,7 @@ public class RegisterGarden extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference dbreference;
     private DatabaseReference userReference ;
+
     // Create a storage reference from our app
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference gardenStorageRef = storage.getReference("gardens");
@@ -68,6 +69,7 @@ public class RegisterGarden extends AppCompatActivity {
     private saveInfo loggedInUserInfo = new saveInfo();
 
 
+    private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView mImageView;
 
     private Uri gardenImageUri = null;
@@ -317,12 +319,9 @@ public class RegisterGarden extends AppCompatActivity {
 
     public void onClickCamera(View v){
 
-        System.out.println("Inside onClickCamera");
-
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            System.out.println("Inside onClickCamera 1");
             // Create the File where the photo should go
             File photoFile = null;
             try {
@@ -405,6 +404,13 @@ public class RegisterGarden extends AppCompatActivity {
 
     }
 
+    public void imagePicker(View v){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -412,7 +418,19 @@ public class RegisterGarden extends AppCompatActivity {
             System.out.println("Inside Activity Result");
             handleBigCameraPhoto();
         }
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
+            Uri uri = data.getData();
+
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                mImageView.setImageBitmap(bitmap);
+                gardenImageUri = uri;
+                mImageView.setVisibility(View.VISIBLE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void putImagetoFireBase(){

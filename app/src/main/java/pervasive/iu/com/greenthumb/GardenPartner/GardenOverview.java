@@ -514,7 +514,11 @@ public class GardenOverview extends Fragment {
 
 
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle("Garden Overview");
+    }
 
 
 

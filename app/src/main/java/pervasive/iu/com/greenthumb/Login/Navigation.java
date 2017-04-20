@@ -10,14 +10,29 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import org.w3c.dom.Text;
 
 import pervasive.iu.com.greenthumb.GardenPartner.GardenPartner;
 import pervasive.iu.com.greenthumb.MyPlants.plant;
@@ -27,6 +42,12 @@ public class Navigation extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth firebaseAuth;
+    private ImageView imgViewUser;
+    private TextView txtUserName, txtUserEmail;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference userStorageRef = storage.getReference("user");
+    private StorageReference userImageRef;
+    private String userName="", mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +56,56 @@ public class Navigation extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        imgViewUser = (ImageView) header.findViewById(R.id.ivUser);
+        txtUserName = (TextView) header.findViewById(R.id.txtUserName);
+        txtUserEmail = (TextView) header.findViewById(R.id.txtEmailId);
+
+        //txtUserEmail.setText();
+
         firebaseAuth=FirebaseAuth.getInstance();
         FirebaseUser user=firebaseAuth.getCurrentUser();
 
         String token = FirebaseInstanceId.getInstance().getToken();
-
         DatabaseReference userref = FirebaseDatabase.getInstance().getReference(user.getUid());
 
+        LayoutInflater inflater ;
+        ViewGroup container;
+       // View view = inflater.inflate(R.layout.app_bar_navigation, container, false);
+        userref.addValueEventListener(new ValueEventListener() {
+         @Override
+         public void onDataChange(DataSnapshot dataSnapshot) {
+
+                     for(DataSnapshot ds : dataSnapshot.getChildren()){
+                         if(ds.getKey().equalsIgnoreCase("firstname")){
+                             userName +=  ds.getValue().toString()+" ";
+                         }else if(ds.getKey().equalsIgnoreCase("lastname")){
+                             userName +=   ds.getValue().toString();
+                         }else if(ds.getKey().equalsIgnoreCase("emailId")){
+                             txtUserEmail.setText(ds.getValue().toString());
+                         }else if(ds.getKey().equalsIgnoreCase("UserImagePath")){
+                             mCurrentPhotoPath = ds.getValue().toString();
+                             userImageRef = storage.getReference(mCurrentPhotoPath);
+                             Glide.with(getApplicationContext())
+                                     .using(new FirebaseImageLoader())
+                                     .load(userImageRef)
+                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                     .skipMemoryCache(true)
+                                     .into(imgViewUser);
+                         }
+
+                         if(userName != null && !userName.isEmpty()){
+                             txtUserName.setText("Welcome, " +userName);
+                         }
+                     }
+         }
+
+         @Override
+         public void onCancelled(DatabaseError databaseError) {
+
+         }
+     });
         userref.child("token").setValue(token);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -50,7 +114,6 @@ public class Navigation extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         displayScreen(R.id.my_plant);
@@ -111,6 +174,7 @@ public class Navigation extends AppCompatActivity
         {
             FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_navigation,fragment);
+            ft.addToBackStack(null);
             ft.commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

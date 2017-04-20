@@ -4,19 +4,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/my_plant"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_green_plant"
             android:title="My Plant" />
         <item
             android:id="@+id/garden_partner"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_garden_partner"
             android:title="Garden Partner" />
         <item
             android:id="@+id/profile"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_my_account"
             android:title="My Account" />
         <item
             android:id="@+id/logout"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_action_name"
             android:title="Logout" />
     </group>
 

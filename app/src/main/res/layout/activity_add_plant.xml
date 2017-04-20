@@ -3,10 +3,10 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/frameLayout">
-
 <ScrollView
     android:id="@+id/addplantsv"
     android:layout_width="match_parent"
@@ -37,23 +37,54 @@
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/ic_default_plant"
+                app:srcCompat="@mipmap/ic_plant_icon"
                 android:scaleType="center"
                 android:id="@+id/imgViewPlant"
-                android:layout_weight="1.5"/>
-
-            <ImageButton
-                android:layout_gravity="center"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:srcCompat="@drawable/ic_add_image"
-                android:alpha="0.75"
-                android:id="@+id/btnAddImage"
-                android:onClick="onClickCamera"
-                />
-
+                android:layout_weight="1"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5">
+
+                <ImageButton
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    app:srcCompat="@mipmap/ic_photo"
+                    android:id="@+id/btnAddGalleryImage"
+                    android:onClick="imagePicker"
+                    android:layout_alignParentRight = "true"
+                    android:layout_gravity="center"
+                    android:elevation="10dp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
+
+            <ImageButton
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:srcCompat="@mipmap/ic_camera"
+                android:id="@+id/btnAddImage"
+                android:onClick="onClickCamera"
+                android:elevation="10dp"
+                android:layout_gravity="center"/>
+            </LinearLayout>
+
+        </LinearLayout>
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_pname"
                 android:layout_width="match_parent"
@@ -124,22 +155,36 @@
             android:id="@+id/btnSavePlant"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:layout_weight="1" />
+            android:textColor="#FFFFFF"
+            android:layout_weight="1"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="20dp" />
 
         <Button
             android:text="Update"
             android:id="@+id/btnUpdatePlant"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:visibility="invisible"
-            android:layout_weight="1" />
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"/>
+
         <Button
             android:text="Show Stats"
             android:id="@+id/btnShowStats"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:visibility="invisible"
-            android:layout_weight="1" />
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginBottom="10dp" />
+
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
 

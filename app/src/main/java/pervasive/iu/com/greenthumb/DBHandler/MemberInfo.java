@@ -7,10 +7,7 @@ import java.io.Serializable;
  */
 
 public class MemberInfo implements Serializable {
-
-
-
-
+    
     public String firstname;
     public String lastname;
     public String address;
