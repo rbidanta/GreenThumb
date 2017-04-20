@@ -2,6 +2,7 @@ package pervasive.iu.com.greenthumb.Adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,6 +99,33 @@ public class VitalStatViewAdapter extends BaseAdapter{
         HashMap.Entry<String, String> item = getItem(position);
         viewHolder.textViewStatName.setText(item.getKey());
         viewHolder.textViewStatVal.setText(item.getValue());
+
+        viewHolder.textViewStatName.setTextColor(Color.parseColor("#327832"));
+        viewHolder.textViewStatVal.setTextColor(Color.parseColor("#327832"));
+
+        if (viewHolder.textViewStatName.getText().equals("sunglight")) {
+            if (Double.parseDouble(viewHolder.textViewStatVal.getText().toString()) > 50000
+                    || Double.parseDouble(viewHolder.textViewStatVal.getText().toString()) < 25000) {
+                viewHolder.textViewStatVal.setTextColor(Color.parseColor("#FF0000"));
+                viewHolder.textViewStatName.setTextColor(Color.parseColor("#FF0000"));
+            }
+        }else if (viewHolder.textViewStatName.getText().equals("moisture")) {
+            if (Double.parseDouble(viewHolder.textViewStatVal.getText().toString()) > 50) {
+                viewHolder.textViewStatVal.setTextColor(Color.parseColor("#FF0000"));
+                viewHolder.textViewStatName.setTextColor(Color.parseColor("#FF0000"));
+            }
+        }else if(viewHolder.textViewStatName.getText().equals("ph")) {
+            if (Double.parseDouble(viewHolder.textViewStatVal.getText().toString()) > 2) {
+                viewHolder.textViewStatVal.setTextColor(Color.parseColor("#FF0000"));
+                viewHolder.textViewStatName.setTextColor(Color.parseColor("#FF0000"));
+            }
+        }else if(viewHolder.textViewStatName.getText().equals("temperature")) {
+            if (Double.parseDouble(viewHolder.textViewStatVal.getText().toString()) > 100
+                    || Double.parseDouble(viewHolder.textViewStatVal.getText().toString()) < 30) {
+                viewHolder.textViewStatVal.setTextColor(Color.parseColor("#FF0000"));
+                viewHolder.textViewStatName.setTextColor(Color.parseColor("#FF0000"));
+            }
+        }
         return convertView;
     }
 }

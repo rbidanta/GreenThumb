@@ -62,7 +62,7 @@ public class plant extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         plantReference = def.child(user.getUid()).child("Plants");
         if (toolbar != null){
-            initToolbar();
+           // initToolbar();
         }
         lv = (ListView) view.findViewById(R.id.plantList);
         addButtonBaseYCoordinate = btnAddPlant.getY();
@@ -71,7 +71,6 @@ public class plant extends Fragment {
 
 
     protected void initToolbar() {
-        toolbar.setTitle("My Plants");
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
