@@ -6,12 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="pervasive.iu.com.greenthumb.MyPlants.plant">
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:background="#D3D3D3"
         android:id="@+id/plantList" />
 
     <ImageButton
