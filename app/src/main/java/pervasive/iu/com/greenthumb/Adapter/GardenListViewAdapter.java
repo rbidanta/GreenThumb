@@ -22,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pervasive.iu.com.greenthumb.DBHandler.GardenInfo;
 import pervasive.iu.com.greenthumb.R;
@@ -64,6 +65,7 @@ public class GardenListViewAdapter extends ArrayAdapter<GardenInfo> implements D
         public TextView gardenAddress;
         public TextView gardenId;
         public de.hdodenhof.circleimageview.CircleImageView gardenImageView;
+        public ImageView statusView;
 
 
 
@@ -87,6 +89,7 @@ public class GardenListViewAdapter extends ArrayAdapter<GardenInfo> implements D
             viewHolder.gardenId = (TextView) convertView.findViewById(R.id.guniqeid);
             viewHolder.gardenAddress = (TextView) convertView.findViewById(R.id.gaddress);
             viewHolder.gardenImageView = (de.hdodenhof.circleimageview.CircleImageView) convertView.findViewById(R.id.garden_thumbnail);
+            viewHolder.statusView = (ImageView) convertView.findViewById(R.id.statustype) ;
 
             result=convertView;
 
@@ -104,10 +107,35 @@ public class GardenListViewAdapter extends ArrayAdapter<GardenInfo> implements D
         viewHolder.gardenId.setText(dataModel.getgId());
         viewHolder.gardenAddress.setText(dataModel.getgAddress());
 
+
+        List<String> members = dataModel.getgMembers();
+
+        if(!members.isEmpty()) {
+
+            if (members.get(1).equalsIgnoreCase("owner")) {
+
+                Glide.with(getContext())
+                        .load(R.mipmap.ic_owner)
+                        .into(viewHolder.statusView);
+
+            } else if (members.get(1).equalsIgnoreCase("false")) {
+                Glide.with(getContext())
+                        .load(R.mipmap.ic_nonmember)
+                        .into(viewHolder.statusView);
+            } else if (members.get(1).equalsIgnoreCase("true")) {
+                Glide.with(getContext())
+                        .load(R.mipmap.ic_grantedmember)
+                        .into(viewHolder.statusView);
+            }
+        }
+
+
         Glide.with(getContext())
                 .using(new FirebaseImageLoader())
                 .load(gardenStorageRef)
                 .into(viewHolder.gardenImageView);
+
+
 
 
         // Return the completed view to render on screen

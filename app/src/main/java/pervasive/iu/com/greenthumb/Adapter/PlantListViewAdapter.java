@@ -54,7 +54,6 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
         public TextView plantId;
         public de.hdodenhof.circleimageview.CircleImageView plantStat;
 
-
     }
 
     @Override

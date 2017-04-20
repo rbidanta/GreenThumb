@@ -299,6 +299,10 @@ public class GardenOverview extends Fragment {
 
                             gardenReference.child(gardenId).child("gMembers").child(members).setValue(Boolean.TRUE);
 
+
+                            DatabaseReference leaderBoard = FirebaseDatabase.getInstance().getReference("leaderboard");
+                            leaderBoard.child(gardenId).child(members).setValue(Integer.parseInt("100"));
+
                         }
 
                     }
@@ -413,12 +417,14 @@ public class GardenOverview extends Fragment {
         DatabaseReference gardenReference = FirebaseDatabase.getInstance().getReference("gardens");
         gardenReference.child(gardenId).child("gMembers").child(requesterId).setValue(Boolean.FALSE);
 
+
     }
 
     private void cancelMembership(String gardenId, String requesterId){
 
         DatabaseReference gardenReference = FirebaseDatabase.getInstance().getReference("gardens");
         gardenReference.child(gardenId).child("gMembers").child(requesterId).setValue(null);
+
 
     }
 

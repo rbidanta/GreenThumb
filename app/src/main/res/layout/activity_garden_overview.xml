@@ -124,6 +124,7 @@
             android:layout_centerHorizontal="true"
             android:background="@color/colorPrimary"
             android:id="@+id/req_memship"
+            android:textColor="@android:color/white"
             android:visibility="gone" />
 
 
