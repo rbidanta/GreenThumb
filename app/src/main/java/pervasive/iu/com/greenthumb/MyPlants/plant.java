@@ -6,8 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -44,6 +49,10 @@ public class plant extends Fragment {
     private ListView lv;
     private ArrayList<Plants> plantList;
     private DatabaseReference plantReference;
+    private Toolbar toolbar;
+    private MenuItem searchMenu;
+    public static boolean searchActive = false;
+    private float addButtonBaseYCoordinate;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -52,10 +61,77 @@ public class plant extends Fragment {
         DatabaseReference def = FirebaseDatabase.getInstance().getReference();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         plantReference = def.child(user.getUid()).child("Plants");
-
+        if (toolbar != null){
+            initToolbar();
+        }
         lv = (ListView) view.findViewById(R.id.plantList);
+        addButtonBaseYCoordinate = btnAddPlant.getY();
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
     }
 
+
+    protected void initToolbar() {
+        toolbar.setTitle("My Plants");
+
+        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+
+        Menu menu = toolbar.getMenu();
+
+        if (menu != null) {
+            searchMenu = menu.findItem(R.id.action_search);
+
+            if (searchMenu != null) {
+
+                SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenu);
+
+                if (searchView != null) {
+                    searchView.setQueryHint("Search");
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            return false;
+                        }
+                    });
+
+                    MenuItemCompat.setOnActionExpandListener(searchMenu,
+                            new MenuItemCompat.OnActionExpandListener() {
+
+                                @Override
+                                public boolean onMenuItemActionExpand(MenuItem item) {
+                                    searchActive = true;
+                                    addButtonVisibility(false);
+                                    lv.setLongClickable(false);
+
+                                   // realIndexesOfSearchResults = new ArrayList<Integer>();
+                                   // for (int i = 0; i < notes.length(); i++)
+                                  //      realIndexesOfSearchResults.add(i);
+
+                                  //  adapter.notifyDataSetChanged();
+
+                                    return true;
+                                }
+
+                                @Override
+                                public boolean onMenuItemActionCollapse(MenuItem item) {
+                                    searchEnded();
+                                    return true;
+                                }
+                            });
+                }
+            }
+        }
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -131,5 +207,23 @@ public class plant extends Fragment {
     public void onOptionsMenuClosed(Menu menu) {
         super.onOptionsMenuClosed(menu);
 
+    }
+
+    protected void searchEnded() {
+        searchActive = false;
+        //adapter = new Adapter(getApplicationContext(), notes, date);
+      //  listView.setAdapter(adapter);
+      //  listView.setLongClickable(true);
+        addButtonVisibility(true);
+    }
+
+    protected void addButtonVisibility(boolean isVisible) {
+        if (isVisible) {
+            btnAddPlant.animate().cancel();
+            btnAddPlant.animate().translationY(addButtonBaseYCoordinate);
+        } else {
+            btnAddPlant.animate().cancel();
+            btnAddPlant.animate().translationY(addButtonBaseYCoordinate + 500);
+        }
     }
 }

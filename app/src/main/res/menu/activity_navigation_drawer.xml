@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/my_plant"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@mipmap/ic_camera"
             android:title="My Plant" />
         <item
             android:id="@+id/garden_partner"

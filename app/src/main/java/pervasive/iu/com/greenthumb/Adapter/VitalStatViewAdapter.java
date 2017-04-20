@@ -67,6 +67,7 @@ public class VitalStatViewAdapter extends BaseAdapter{
             viewHolder.textViewStatName = (TextView) convertView.findViewById(R.id.tvStatName);
             viewHolder.textViewStatVal = (TextView) convertView.findViewById(R.id.tvStatValue);
             viewHolder.imgViewStat = (ImageView) convertView.findViewById(R.id.ivStat);
+
             if(position == 0){
                 Glide.with(parent.getContext())
                         .load(R.mipmap.ic_wb_sunny)
