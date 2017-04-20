@@ -88,11 +88,27 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
 
                 HashMap<String, String> values = dataModel.getThresholdValues();
                 boolean isSafe = true;
-                for(HashMap.Entry<String, String> statEntry : values.entrySet()){
-                    // System.out.println(statEntry.getKey() +" :: "+ statEntry.getValue());
-                    if(Double.parseDouble(statEntry.getValue())>20){
-                        isSafe = false;
-                        break;
+                for(HashMap.Entry<String, String> statEntry : values.entrySet()) {
+                    if (statEntry.getKey().equals("sunglight")) {
+                        if (Double.parseDouble(statEntry.getValue()) > 50000 || Double.parseDouble(statEntry.getValue()) < 25000) {
+                            isSafe = false;
+                            break;
+                        }
+                    }else if (statEntry.getKey().equals("moisture")) {
+                        if (Double.parseDouble(statEntry.getValue()) > 50) {
+                            isSafe = false;
+                            break;
+                        }
+                    }else if(statEntry.getKey().equals("ph")) {
+                        if (Double.parseDouble(statEntry.getValue()) > 2) {
+                            isSafe = false;
+                            break;
+                        }
+                    }else if(statEntry.getKey().equals("temperature")) {
+                        if (Double.parseDouble(statEntry.getValue()) > 100 || Double.parseDouble(statEntry.getValue()) < 30) {
+                            isSafe = false;
+                            break;
+                        }
                     }
                 }
 
@@ -105,6 +121,7 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
                             .load(R.mipmap.ic_safe)
                             .into(viewHolder.plantStat);
                 }
+
                 viewHolder.plantName.setText(dataModel.getPlantName());
                 viewHolder.plantId.setText(dataModel.getPlantId());
 

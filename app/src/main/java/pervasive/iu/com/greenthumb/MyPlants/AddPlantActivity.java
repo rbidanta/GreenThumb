@@ -284,10 +284,10 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 
         plantImagesRef = plantStorageRef.child(userId+"/"+plantId+"/"+plantName.replaceAll(" ","")+".jpg");
         HashMap<String, String> val = new HashMap<String, String>();
-        val.put("sunlight", "11");
-        val.put("moisture", "5.5");
-        val.put("temperature","18.5");
-        val.put("ph", "5");
+        val.put("sunlight", "35000");
+        val.put("moisture", "37");
+        val.put("temperature","70");
+        val.put("ph", "1.5");
 
         HashMap<String, String> thresholdValues = val;
 
