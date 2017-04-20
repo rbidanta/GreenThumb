@@ -74,15 +74,15 @@ public class VitalStatViewAdapter extends BaseAdapter{
                         .load(R.mipmap.ic_wb_sunny)
                         .into(viewHolder.imgViewStat);
 
-            }else if(position == 1){
+            }else if(position == 3){
                 Glide.with(parent.getContext())
                         .load(R.drawable.ic_moist)
                         .into(viewHolder.imgViewStat);
-            }else if(position == 2){
+            }else if(position == 1){
                 Glide.with(parent.getContext())
                         .load(R.mipmap.ic_thermometer)
                         .into(viewHolder.imgViewStat);
-            } else{
+            } else if(position == 2){
                 Glide.with(parent.getContext())
                         .load(R.mipmap.ic_fertilizer)
                         .into(viewHolder.imgViewStat);
