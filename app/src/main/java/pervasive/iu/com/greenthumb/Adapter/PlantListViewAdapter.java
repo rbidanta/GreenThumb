@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -58,62 +59,67 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        Plants dataModel = getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        PlantListViewAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
 
-        if (dataModel != null) {
-            final View result;
+        try{
+            // Get the data item for this position
+            Plants dataModel = getItem(position);
+            // Check if an existing view is being reused, otherwise inflate the view
+            PlantListViewAdapter.ViewHolder viewHolder; // view lookup cache stored in tag
 
-            if (convertView == null) {
+            if (dataModel != null) {
+                final View result;
 
-                viewHolder = new PlantListViewAdapter.ViewHolder();
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                convertView = inflater.inflate(R.layout.plant_list_view, parent, false);
-                viewHolder.plantName = (TextView) convertView.findViewById(R.id.plName);
-                viewHolder.plantId = (TextView) convertView.findViewById(R.id.plId);
-                viewHolder.plantImage = (de.hdodenhof.circleimageview.CircleImageView ) convertView.findViewById(R.id.plImage);
-                viewHolder.plantStat = (de.hdodenhof.circleimageview.CircleImageView) convertView.findViewById(R.id.plStat);
-                result = convertView;
+                if (convertView == null) {
 
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (PlantListViewAdapter.ViewHolder) convertView.getTag();
-                result = convertView;
-            }
+                    viewHolder = new PlantListViewAdapter.ViewHolder();
+                    LayoutInflater inflater = LayoutInflater.from(getContext());
+                    convertView = inflater.inflate(R.layout.plant_list_view, parent, false);
+                    viewHolder.plantName = (TextView) convertView.findViewById(R.id.plName);
+                    viewHolder.plantId = (TextView) convertView.findViewById(R.id.plId);
+                    viewHolder.plantImage = (de.hdodenhof.circleimageview.CircleImageView ) convertView.findViewById(R.id.plImage);
+                    viewHolder.plantStat = (de.hdodenhof.circleimageview.CircleImageView) convertView.findViewById(R.id.plStat);
+                    result = convertView;
 
-            HashMap<String, String> values = dataModel.getThresholdValues();
-            boolean isSafe = true;
-            for(HashMap.Entry<String, String> statEntry : values.entrySet()){
-               // System.out.println(statEntry.getKey() +" :: "+ statEntry.getValue());
-                if(Double.parseDouble(statEntry.getValue())>20){
-                    isSafe = false;
-                    break;
+                    convertView.setTag(viewHolder);
+                } else {
+                    viewHolder = (PlantListViewAdapter.ViewHolder) convertView.getTag();
+                    result = convertView;
                 }
-            }
 
-            if(!isSafe){
+                HashMap<String, String> values = dataModel.getThresholdValues();
+                boolean isSafe = true;
+                for(HashMap.Entry<String, String> statEntry : values.entrySet()){
+                    // System.out.println(statEntry.getKey() +" :: "+ statEntry.getValue());
+                    if(Double.parseDouble(statEntry.getValue())>20){
+                        isSafe = false;
+                        break;
+                    }
+                }
+
+                if(!isSafe){
+                    Glide.with(getContext())
+                            .load(R.mipmap.ic_danger)
+                            .into(viewHolder.plantStat);
+                }else{
+                    Glide.with(getContext())
+                            .load(R.mipmap.ic_safe)
+                            .into(viewHolder.plantStat);
+                }
+                viewHolder.plantName.setText(dataModel.getPlantName());
+                viewHolder.plantId.setText(dataModel.getPlantId());
+
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference plantImagesRef = storage.getReference(dataModel.getPlantImagePath());
+
                 Glide.with(getContext())
-                        .load(R.mipmap.ic_danger)
-                        .into(viewHolder.plantStat);
-            }else{
-                Glide.with(getContext())
-                        .load(R.mipmap.ic_safe)
-                        .into(viewHolder.plantStat);
+                        .using(new FirebaseImageLoader())
+                        .load(plantImagesRef)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .into(viewHolder.plantImage);
             }
-            viewHolder.plantName.setText(dataModel.getPlantName());
-            viewHolder.plantId.setText(dataModel.getPlantId());
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference plantImagesRef = storage.getReference(dataModel.getPlantImagePath());
-
-            Glide.with(getContext())
-                    .using(new FirebaseImageLoader())
-                    .load(plantImagesRef)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(viewHolder.plantImage);
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return convertView;
     }

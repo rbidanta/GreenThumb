@@ -1,15 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pervasive.iu.com.greenthumb.Login.Profile">
 
+    <ScrollView
+        android:id="@+id/svProfile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:weightSum="2"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@mipmap/ic_launcher"
+                android:id="@+id/imgProfile" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="60dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@android:color/black"
+                android:textSize="12pt"
+                android:id="@+id/profile_view" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginBottom="20dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5">
+
+                <ImageButton
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    app:srcCompat="@mipmap/ic_photo"
+                    android:id="@+id/btnAddGalleryImage"
+                    android:onClick="imagePicker"
+                    android:layout_alignParentRight = "true"
+                    android:layout_gravity="left"
+                    android:elevation="10dp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5">
+
+                <ImageButton
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    app:srcCompat="@mipmap/ic_camera"
+                    android:id="@+id/btnAddImage"
+                    android:onClick="onClickCamera"
+                    android:elevation="10dp"
+                    android:layout_gravity="left"/>
+            </LinearLayout>
+
+    </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -22,17 +108,11 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:weightSum="1">
-
-        <TextView
-            android:text="User Profile"
-            android:layout_width="139dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/profile_view"
-            android:textAlignment="center"/>
+        android:weightSum="1"
+        android:visibility="gone">
 
         <Button
             android:text="Logout"
@@ -42,8 +122,9 @@
             android:layout_weight="0.09"
             android:visibility="gone"/>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
         <TextView
@@ -61,7 +142,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
@@ -79,7 +160,7 @@
             android:ems="10" />
     </LinearLayout>
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
             <TextView
@@ -105,11 +186,11 @@
                 android:id="@+id/address" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
         <TextView
-            android:text="Location"
+            android:text="City"
             android:layout_width="139dp"
             android:layout_height="wrap_content"
             android:id="@+id/location"
@@ -122,8 +203,9 @@
             android:layout_weight="0.75"
             android:ems="10" />
     </LinearLayout>
+
         <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
@@ -142,7 +224,7 @@
                 android:id="@+id/phone" />
     </LinearLayout>
         <Button
-            android:text="save"
+            android:text="Save"
             android:layout_width="97dp"
             android:layout_height="wrap_content"
             android:id="@+id/save"
@@ -150,4 +232,6 @@
             android:layout_gravity="center"/>
 
     </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
