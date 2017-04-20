@@ -10,11 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import pervasive.iu.com.greenthumb.DBHandler.GardenInfo;
 import pervasive.iu.com.greenthumb.Model.Plants;
@@ -50,7 +52,7 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
         public de.hdodenhof.circleimageview.CircleImageView plantImage;
         public TextView plantName;
         public TextView plantId;
-
+        public de.hdodenhof.circleimageview.CircleImageView plantStat;
 
 
     }
@@ -73,6 +75,7 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
                 viewHolder.plantName = (TextView) convertView.findViewById(R.id.plName);
                 viewHolder.plantId = (TextView) convertView.findViewById(R.id.plId);
                 viewHolder.plantImage = (de.hdodenhof.circleimageview.CircleImageView ) convertView.findViewById(R.id.plImage);
+                viewHolder.plantStat = (de.hdodenhof.circleimageview.CircleImageView) convertView.findViewById(R.id.plStat);
                 result = convertView;
 
                 convertView.setTag(viewHolder);
@@ -81,6 +84,25 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
                 result = convertView;
             }
 
+            HashMap<String, String> values = dataModel.getThresholdValues();
+            boolean isSafe = true;
+            for(HashMap.Entry<String, String> statEntry : values.entrySet()){
+               // System.out.println(statEntry.getKey() +" :: "+ statEntry.getValue());
+                if(Double.parseDouble(statEntry.getValue())>20){
+                    isSafe = false;
+                    break;
+                }
+            }
+
+            if(!isSafe){
+                Glide.with(getContext())
+                        .load(R.mipmap.ic_danger)
+                        .into(viewHolder.plantStat);
+            }else{
+                Glide.with(getContext())
+                        .load(R.mipmap.ic_safe)
+                        .into(viewHolder.plantStat);
+            }
             viewHolder.plantName.setText(dataModel.getPlantName());
             viewHolder.plantId.setText(dataModel.getPlantId());
 
@@ -90,6 +112,8 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
             Glide.with(getContext())
                     .using(new FirebaseImageLoader())
                     .load(plantImagesRef)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .into(viewHolder.plantImage);
         }
         return convertView;

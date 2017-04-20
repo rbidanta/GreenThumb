@@ -112,7 +112,7 @@
                 android:layout_gravity="center"
                 android:layout_width="63dp"
                 android:layout_height="wrap_content"
-                app:srcCompat="@drawable/ic_menu_camera"
+                app:srcCompat="@mipmap/ic_camera"
                 android:id="@+id/imageButton"
                 android:onClick="onClickCamera"
                 />
