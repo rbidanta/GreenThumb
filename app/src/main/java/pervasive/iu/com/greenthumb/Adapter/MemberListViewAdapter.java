@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,6 +61,7 @@ public class MemberListViewAdapter extends ArrayAdapter<MemberInfo> implements D
         public TextView memberId;
         public CheckBox selectMember;
 
+
     }
 
     @Override
@@ -79,6 +81,7 @@ public class MemberListViewAdapter extends ArrayAdapter<MemberInfo> implements D
             viewHolder.memberName = (TextView) convertView.findViewById(R.id.memberName);
             viewHolder.memberId = (TextView) convertView.findViewById(R.id.memberId);
             viewHolder.selectMember = (CheckBox) convertView.findViewById(R.id.memCheckBox) ;
+
             /*viewHolder.txtVersion = (TextView) convertView.findViewById(R.id.version_number);
             viewHolder.info = (ImageView) convertView.findViewById(R.id.item_info);
 */

@@ -13,14 +13,18 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +49,8 @@ public class GardenPartner extends Fragment{
     //private List<String> gardenList;
     private ArrayList<GardenInfo> gardenInfoList;
     private DatabaseReference gardenReference;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser currentUser;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -61,7 +67,7 @@ public class GardenPartner extends Fragment{
 
         View view = inflater.inflate(R.layout.garden_partner,container,false);
 
-        FloatingActionButton addNewGarden = (FloatingActionButton) view.findViewById(R.id.addnewgarden);
+        ImageButton addNewGarden = (ImageButton) view.findViewById(R.id.addnewgarden);
 
         addNewGarden.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +82,13 @@ public class GardenPartner extends Fragment{
     public void onStart() {
         super.onStart();
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        currentUser = firebaseAuth.getCurrentUser();
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+
+        System.out.println("Token=================="+token);
+
         gardenReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -85,6 +98,8 @@ public class GardenPartner extends Fragment{
 
                 for(DataSnapshot gardenSnapshot : dataSnapshot.getChildren()){
                     Map<String,Object> gInfoMap = (HashMap<String, Object>) gardenSnapshot.getValue();
+
+                    List<String> memberslist = new ArrayList<String>();
 
                     GardenInfo ginfo = new GardenInfo();
                     ginfo.setgName(gInfoMap.get("gName").toString());
@@ -97,6 +112,44 @@ public class GardenPartner extends Fragment{
                     }else{
                         ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
                     }
+
+
+                    String member = "";
+                    String membertype = "";
+                    if(ginfo.getgOwner().equalsIgnoreCase(currentUser.getUid().toString())) {
+
+                        member = ginfo.getgOwner();
+                        membertype = "owner";
+                        memberslist.add(member);
+                        memberslist.add(membertype);
+
+                    } else {
+
+                        if (null == gInfoMap.get("gMembers")) {
+
+                            memberslist.add(ginfo.getgOwner());
+                            memberslist.add(String.valueOf(false));
+
+                        } else {
+                            Map<String, Boolean> memberMap = (HashMap) gInfoMap.get("gMembers");
+
+
+                            for (Map.Entry<String, Boolean> entry : memberMap.entrySet()) {
+
+
+                                if (entry.getKey().equalsIgnoreCase(currentUser.getUid().toString())) {
+
+                                    memberslist.add(entry.getKey());
+                                    memberslist.add(String.valueOf(entry.getValue()));
+
+                                }
+
+
+                            }
+                        }
+                    }
+
+                    ginfo.setgMembers(memberslist);
 
                     gardenInfoList.add(ginfo);
 

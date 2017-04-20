@@ -15,6 +15,9 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import pervasive.iu.com.greenthumb.GardenPartner.GardenPartner;
 import pervasive.iu.com.greenthumb.MyPlants.plant;
@@ -34,6 +37,12 @@ public class Navigation extends AppCompatActivity
 
         firebaseAuth=FirebaseAuth.getInstance();
         FirebaseUser user=firebaseAuth.getCurrentUser();
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+
+        DatabaseReference userref = FirebaseDatabase.getInstance().getReference(user.getUid());
+
+        userref.child("token").setValue(token);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
