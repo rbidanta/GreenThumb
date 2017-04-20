@@ -79,16 +79,12 @@ public class Navigation extends AppCompatActivity
 
                      for(DataSnapshot ds : dataSnapshot.getChildren()){
                          if(ds.getKey().equalsIgnoreCase("firstname")){
-                             System.out.println("User name "+ds.getValue().toString());
                              userName +=  ds.getValue().toString()+" ";
                          }else if(ds.getKey().equalsIgnoreCase("lastname")){
-                             System.out.println("Last name "+ds.getValue().toString());
                              userName +=   ds.getValue().toString();
                          }else if(ds.getKey().equalsIgnoreCase("emailId")){
-                             System.out.println("Email id "+ds.getValue().toString());
                              txtUserEmail.setText(ds.getValue().toString());
                          }else if(ds.getKey().equalsIgnoreCase("UserImagePath")){
-                             System.out.println("User image path"+ds.getValue().toString());
                              mCurrentPhotoPath = ds.getValue().toString();
                              userImageRef = storage.getReference(mCurrentPhotoPath);
                              Glide.with(getApplicationContext())

@@ -108,13 +108,24 @@
                 android:layout_gravity="center"
                 android:layout_weight="0.98"
                 android:textStyle="bold"/>
+
+            <ImageButton
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:srcCompat="@mipmap/ic_photo"
+                android:id="@+id/btnGallery"
+                android:onClick="imagePicker"
+                android:layout_weight="0.09"
+                android:elevation="10dp" />
+
             <ImageButton
                 android:layout_gravity="center"
-                android:layout_width="63dp"
-                android:layout_height="wrap_content"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 app:srcCompat="@mipmap/ic_camera"
                 android:id="@+id/imageButton"
                 android:onClick="onClickCamera"
+                android:elevation="10dp"
                 />
 
         </LinearLayout>

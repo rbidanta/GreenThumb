@@ -77,39 +77,4 @@ public class PlantStats extends AppCompatActivity{
                 .load(plantImagesRef)
                 .into(ivPlant);
     }
-
-   /* @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        System.out.println("On create of plant stats");
-
-        View view = inflater.inflate(R.layout.activity_plant_stats,container,false);
-
-        Bundle bundle = getArguments();
-
-        final Plants plantInfo = (Plants) bundle.getSerializable("plantInfo");
-
-        final String plantName = plantInfo.getPlantName().toString();
-
-        String plantImagePath = plantInfo.getPlantImagePath().toString();
-
-        HashMap<String, String> thresholdValues = plantInfo.getThresholdValues();
-
-        tvPlantName = (TextView) view.findViewById(R.id.txtPlantName);
-        ivPlant = (ImageView) view.findViewById(R.id.imgViewPlant);
-        plantImagesRef = storage.getReference(plantImagePath);
-
-        tvPlantName.setText(plantName);
-
-        Glide.with(view.getContext())
-                .using(new FirebaseImageLoader())
-                .load(plantImagesRef)
-                .into(ivPlant);
-
-
-        return view;
-    }
-
-*/
-
 }
