@@ -96,70 +96,70 @@ public class GardenPartner extends Fragment{
                 gardenInfoList = new ArrayList<GardenInfo>();
                 //gardenList = new ArrayList<String>();
 
-                for(DataSnapshot gardenSnapshot : dataSnapshot.getChildren()){
-                    Map<String,Object> gInfoMap = (HashMap<String, Object>) gardenSnapshot.getValue();
+                try {
+                    for (DataSnapshot gardenSnapshot : dataSnapshot.getChildren()) {
+                        Map<String, Object> gInfoMap = (HashMap<String, Object>) gardenSnapshot.getValue();
 
-                    List<String> memberslist = new ArrayList<String>();
+                        List<String> memberslist = new ArrayList<String>();
 
-                    GardenInfo ginfo = new GardenInfo();
-                    ginfo.setgName(gInfoMap.get("gName").toString());
-                    ginfo.setgId(gInfoMap.get("gId").toString());
-                    ginfo.setgAddress(gInfoMap.get("gAddress").toString());
-                    ginfo.setgFireBasePath(gInfoMap.get("gFireBasePath").toString());
-                    ginfo.setgOwner(gInfoMap.get("gOwner").toString());
-                    if(null == gInfoMap.get("gOwnerPhone")){
-                        ginfo.setgOwnerPhone("");
-                    }else{
-                        ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
-                    }
+                        GardenInfo ginfo = new GardenInfo();
+                        ginfo.setgName(gInfoMap.get("gName").toString());
+                        ginfo.setgId(gInfoMap.get("gId").toString());
+                        ginfo.setgAddress(gInfoMap.get("gAddress").toString());
+                        ginfo.setgFireBasePath(gInfoMap.get("gFireBasePath").toString());
+                        ginfo.setgOwner(gInfoMap.get("gOwner").toString());
+                        if (null == gInfoMap.get("gOwnerPhone")) {
+                            ginfo.setgOwnerPhone("");
+                        } else {
+                            ginfo.setgOwnerPhone(gInfoMap.get("gOwnerPhone").toString());
+                        }
 
 
-                    String member = "";
-                    String membertype = "";
-                    if(ginfo.getgOwner().equalsIgnoreCase(currentUser.getUid().toString())) {
+                        String member = "";
+                        String membertype = "";
+                        if (ginfo.getgOwner().equalsIgnoreCase(currentUser.getUid().toString())) {
 
-                        member = ginfo.getgOwner();
-                        membertype = "owner";
-                        memberslist.add(member);
-                        memberslist.add(membertype);
-
-                    } else {
-
-                        if (null == gInfoMap.get("gMembers")) {
-
-                            memberslist.add(ginfo.getgOwner());
-                            memberslist.add(String.valueOf(false));
+                            member = ginfo.getgOwner();
+                            membertype = "owner";
+                            memberslist.add(member);
+                            memberslist.add(membertype);
 
                         } else {
-                            Map<String, Boolean> memberMap = (HashMap) gInfoMap.get("gMembers");
+
+                            if (null == gInfoMap.get("gMembers")) {
+
+                                memberslist.add(ginfo.getgOwner());
+                                memberslist.add(String.valueOf(false));
+
+                            } else {
+                                Map<String, Boolean> memberMap = (HashMap) gInfoMap.get("gMembers");
 
 
-                            for (Map.Entry<String, Boolean> entry : memberMap.entrySet()) {
+                                for (Map.Entry<String, Boolean> entry : memberMap.entrySet()) {
 
 
-                                if (entry.getKey().equalsIgnoreCase(currentUser.getUid().toString())) {
+                                    if (entry.getKey().equalsIgnoreCase(currentUser.getUid().toString())) {
 
-                                    memberslist.add(entry.getKey());
-                                    memberslist.add(String.valueOf(entry.getValue()));
+                                        memberslist.add(entry.getKey());
+                                        memberslist.add(String.valueOf(entry.getValue()));
+
+                                    }
+
 
                                 }
-
-
                             }
                         }
+
+                        ginfo.setgMembers(memberslist);
+
+                        gardenInfoList.add(ginfo);
+
+
                     }
 
-                    ginfo.setgMembers(memberslist);
+                    GardenListViewAdapter adapter = new GardenListViewAdapter(gardenInfoList, getContext());
 
-                    gardenInfoList.add(ginfo);
-
-
-                }
-
-                GardenListViewAdapter adapter = new GardenListViewAdapter(gardenInfoList,getContext());
-
-                lv.setAdapter(adapter);
-
+                    lv.setAdapter(adapter);
 
                 lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
@@ -182,6 +182,10 @@ public class GardenPartner extends Fragment{
 
                     }
                 });
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
             }
 
             @Override
