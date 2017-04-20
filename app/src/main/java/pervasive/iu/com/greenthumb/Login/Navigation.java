@@ -174,6 +174,7 @@ public class Navigation extends AppCompatActivity
         {
             FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_navigation,fragment);
+            ft.addToBackStack(null);
             ft.commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
