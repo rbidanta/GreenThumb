@@ -68,7 +68,7 @@ public class GTSignUp extends AppCompatActivity implements LoaderCallbacks<Curso
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gtsign_up);
-        // Set up the login form.
+        // Set up the login form
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
