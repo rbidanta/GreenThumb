@@ -69,10 +69,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(TextUtils.isEmpty(email))
         {
             Toast.makeText(this, "Please enter your email address", Toast.LENGTH_SHORT).show();
+            return;
         }
         if(TextUtils.isEmpty(password))
         {
             Toast.makeText(this, "Please enter your password", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         progressDialog.setMessage("User is getting registered");

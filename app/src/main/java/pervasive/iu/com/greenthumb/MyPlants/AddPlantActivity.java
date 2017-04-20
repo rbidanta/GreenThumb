@@ -284,10 +284,10 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 
         plantImagesRef = plantStorageRef.child(userId+"/"+plantId+"/"+plantName.replaceAll(" ","")+".jpg");
         HashMap<String, String> val = new HashMap<String, String>();
-        val.put("Sunlight", "11");
-        val.put("Soil Moisture", "5.5");
-        val.put("Air Temperature","18.5");
-        val.put("PH", "5");
+        val.put("sunlight", "11");
+        val.put("moisture", "5.5");
+        val.put("temperature","18.5");
+        val.put("ph", "5");
 
         HashMap<String, String> thresholdValues = val;
 
@@ -359,6 +359,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 
         return true;
     }
+
     private boolean validatePlantImage() {
 
         if (plantImageUri == null) {
@@ -491,12 +492,6 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         this.sendBroadcast(mediaScanIntent);
     }
 
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -504,18 +499,22 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
             handleBigCameraPhoto();
         }
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            //handleBigCameraPhoto();
 
             Uri uri = data.getData();
 
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                Toast.makeText(getApplicationContext(), "in here " + bitmap.getByteCount(), Toast.LENGTH_LONG).show();
                 plantImg.setImageBitmap(bitmap);
                 plantImageUri = uri;
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 }

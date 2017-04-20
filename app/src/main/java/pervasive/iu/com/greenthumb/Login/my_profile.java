@@ -1,17 +1,32 @@
 package pervasive.iu.com.greenthumb.Login;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,8 +35,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import pervasive.iu.com.greenthumb.DBHandler.saveInfo;
@@ -40,9 +63,18 @@ public class my_profile extends Fragment implements View.OnClickListener{
     private DatabaseReference dbreference;
     private EditText firstname,lastname,email,location,address,phone;
     private Button buttonsave;
-
     private FirebaseUser user;
 
+    private ImageView userImg;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference userStorageRef = storage.getReference("user");
+    private StorageReference userImageRef;
+    private Uri userImageUri = null;
+    private String mCurrentPhotoPath;
+    private Bitmap bitmap;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    private static ImageButton btnGallery, btnCamera;
 
     private String fname = "";
     private String lname ="";
@@ -66,7 +98,6 @@ public class my_profile extends Fragment implements View.OnClickListener{
 
 
     public void perform(View view)
-
     {
         firebaseAuth=FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
@@ -79,9 +110,11 @@ public class my_profile extends Fragment implements View.OnClickListener{
         address=(EditText) view.findViewById(R.id.address);
         phone=(EditText) view.findViewById(R.id.phone);
         buttonsave=(Button) view.findViewById(R.id.save);
-
-
-
+        userImg = (ImageView) view.findViewById(R.id.imgProfile);
+        btnGallery = (ImageButton) view.findViewById(R.id.btnAddGalleryImage);
+        btnCamera = (ImageButton) view.findViewById(R.id.btnAddImage);
+        btnCamera.setVisibility(view.GONE);
+        btnGallery.setVisibility(view.GONE);
         if(firebaseAuth.getCurrentUser()==null)
         {
             getActivity().finish();
@@ -94,7 +127,6 @@ public class my_profile extends Fragment implements View.OnClickListener{
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     for(DataSnapshot ds : dataSnapshot.getChildren()){
-
                         if(ds.getKey().equalsIgnoreCase("firstname")){
                             firstname.setText(ds.getValue().toString());
                         }else if(ds.getKey().equalsIgnoreCase("lastname")){
@@ -105,10 +137,17 @@ public class my_profile extends Fragment implements View.OnClickListener{
                             address.setText(ds.getValue().toString());
                         }else if(ds.getKey().equalsIgnoreCase("phone")){
                             phone.setText(ds.getValue().toString());
+                        }else if(ds.getKey().equalsIgnoreCase("UserImagePath")){
+                            mCurrentPhotoPath = ds.getValue().toString();
+                            userImageRef = storage.getReference(mCurrentPhotoPath);
+                            Glide.with(getContext())
+                                    .using(new FirebaseImageLoader())
+                                    .load(userImageRef)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
+                                    .into(userImg);
                         }
-
                     }
-
                 }
 
                 @Override
@@ -118,9 +157,8 @@ public class my_profile extends Fragment implements View.OnClickListener{
             });
         }
 
-
         profileview=(TextView) view.findViewById(R.id.profile_view);
-        profileview.setText("Welcome " + user.getEmail());
+        profileview.setText(user.getEmail());
         logout_button=(Button) view.findViewById(R.id.logout_but);
 
         logout_button.setOnClickListener(this);
@@ -147,33 +185,35 @@ public class my_profile extends Fragment implements View.OnClickListener{
             Toast.makeText(getActivity(),"Please Enter Phone Number",Toast.LENGTH_LONG).show();
         }else{
 
-
-            saveInfo saveinf=new saveInfo(first_name,last_name,location_val,address_val,phone_num,user.getEmail(),token);
             FirebaseUser user=firebaseAuth.getCurrentUser();
+            String userId = user.getUid();
+            userImageRef = userStorageRef.child(userId+"/"+first_name.replaceAll(" ","")+".jpg");
+            saveInfo saveinf = new saveInfo(first_name, last_name,  address_val, location_val, phone_num, user.getEmail(),token, userImageRef.getPath());
 
             try {
-                dbreference.child(user.getUid()).setValue(saveinf);
-                Toast.makeText(getActivity(),"User information saved successfully",Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-                Toast.makeText(getActivity(),"Error Occurred Saving User Details",Toast.LENGTH_LONG).show();
-            }
-
-        }
-
+               dbreference.child(user.getUid()).setValue(saveinf);
+               Toast.makeText(getActivity(),"User information saved successfully",Toast.LENGTH_LONG).show();
+             } catch (Exception e) {
+               Toast.makeText(getActivity(),"Error Occurred Saving User Details",Toast.LENGTH_LONG).show();
+             }
+       }
+    }
+    public void onClickCamera(View v){
     }
 
+    public void imagePicker(View v){
+    }
     @Override
     public void onClick(View v) {
-        if(v==logout_button)
+        if(v == logout_button)
         {
             firebaseAuth.signOut();
             getActivity().finish();
             startActivity(new Intent(getActivity(),LoginActivity.class));
         }
-        if(v==buttonsave)
+        if(v == buttonsave)
         {
             saveInfo();
         }
-
     }
 }

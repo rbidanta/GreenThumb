@@ -72,7 +72,6 @@ public class plant extends Fragment {
 
     protected void initToolbar() {
         toolbar.setTitle("My Plants");
-
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -112,13 +111,6 @@ public class plant extends Fragment {
                                     searchActive = true;
                                     addButtonVisibility(false);
                                     lv.setLongClickable(false);
-
-                                   // realIndexesOfSearchResults = new ArrayList<Integer>();
-                                   // for (int i = 0; i < notes.length(); i++)
-                                  //      realIndexesOfSearchResults.add(i);
-
-                                  //  adapter.notifyDataSetChanged();
-
                                     return true;
                                 }
 
@@ -160,37 +152,41 @@ public class plant extends Fragment {
 
                 plantList = new ArrayList<Plants>();
 
-                for (DataSnapshot plantSnapShot : dataSnapshot.getChildren()) {
-                    Map<String, Object> plantInfoMap = (HashMap<String, Object>) plantSnapShot.getValue();
+                try {
+                    for (DataSnapshot plantSnapShot : dataSnapshot.getChildren()) {
+                        Map<String, Object> plantInfoMap = (HashMap<String, Object>) plantSnapShot.getValue();
 
-                    Plants plantInfo = new Plants();
-                    plantInfo.setPlantName(plantInfoMap.get("plantName").toString());
-                    plantInfo.setKitId(plantInfoMap.get("kitId").toString());
-                    plantInfo.setNotificationTime(plantInfoMap.get("notificationTime").toString());
-                    plantInfo.setLocation(plantInfoMap.get("location").toString());
-                    plantInfo.setPlantImagePath(plantInfoMap.get("plantImagePath").toString());
-                    plantInfo.setPlantId(plantInfoMap.get("plantId").toString());
-                    HashMap<String, String> values = (HashMap<String, String>) plantInfoMap.get("thresholdValues");
-                    plantInfo.setThresholdValues(values);
-                    plantList.add(plantInfo);
-                }
-
-                PlantListViewAdapter plantAdapter = new PlantListViewAdapter(plantList,getContext());
-
-                lv.setAdapter(plantAdapter);
-
-
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                        Plants plantInfo = (Plants) parent.getItemAtPosition(position);
-                        Intent myIntent = new Intent(getActivity(), AddPlantActivity.class);
-                        myIntent.putExtra("plantInfo", plantInfo);
-                        startActivity(myIntent);
+                        Plants plantInfo = new Plants();
+                        plantInfo.setPlantName(plantInfoMap.get("plantName").toString());
+                        plantInfo.setKitId(plantInfoMap.get("kitId").toString());
+                        plantInfo.setNotificationTime(plantInfoMap.get("notificationTime").toString());
+                        plantInfo.setLocation(plantInfoMap.get("location").toString());
+                        plantInfo.setPlantImagePath(plantInfoMap.get("plantImagePath").toString());
+                        plantInfo.setPlantId(plantInfoMap.get("plantId").toString());
+                        HashMap<String, String> values = (HashMap<String, String>) plantInfoMap.get("thresholdValues");
+                        plantInfo.setThresholdValues(values);
+                        plantList.add(plantInfo);
                     }
-                });
+
+                    PlantListViewAdapter plantAdapter = new PlantListViewAdapter(plantList, getContext());
+
+                    lv.setAdapter(plantAdapter);
+
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            Plants plantInfo = (Plants) parent.getItemAtPosition(position);
+                            Intent myIntent = new Intent(getActivity(), AddPlantActivity.class);
+                            myIntent.putExtra("plantInfo", plantInfo);
+                            startActivity(myIntent);
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                   // Toast.makeText(getContext(),"Sorry, couldn't process your request.",Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -211,9 +207,6 @@ public class plant extends Fragment {
 
     protected void searchEnded() {
         searchActive = false;
-        //adapter = new Adapter(getApplicationContext(), notes, date);
-      //  listView.setAdapter(adapter);
-      //  listView.setLongClickable(true);
         addButtonVisibility(true);
     }
 
