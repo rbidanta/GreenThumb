@@ -47,6 +47,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             String token = FirebaseInstanceId.getInstance().getToken();
 
+            System.out.println("Token=================== "+token);
+
             DatabaseReference userref = FirebaseDatabase.getInstance().getReference(firebase_auth.getCurrentUser().getUid());
 
             userref.child("token").child(token);
