@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -33,20 +34,17 @@ import java.util.Map;
 
 import pervasive.iu.com.greenthumb.Adapter.GardenListViewAdapter;
 import pervasive.iu.com.greenthumb.DBHandler.GardenInfo;
+import pervasive.iu.com.greenthumb.GardenPartner.TabLayoutFragment.GardenOverview;
+import pervasive.iu.com.greenthumb.KanbanActivity;
 import pervasive.iu.com.greenthumb.R;
 
 /**
  *  GardenPartner: This is the screen when the user opens Garden Partner
  */
 
-
-
-
-
 public class GardenPartner extends Fragment{
 
     private ListView lv;
-    //private List<String> gardenList;
     private ArrayList<GardenInfo> gardenInfoList;
     private DatabaseReference gardenReference;
     private FirebaseAuth firebaseAuth;
@@ -58,7 +56,6 @@ public class GardenPartner extends Fragment{
         getActivity().setTitle("Garden Partner");
         gardenReference = FirebaseDatabase.getInstance().getReference("gardens");
         lv = (ListView) view.findViewById(R.id.gardenlist);
-
     }
 
     @Nullable
@@ -94,7 +91,6 @@ public class GardenPartner extends Fragment{
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 gardenInfoList = new ArrayList<GardenInfo>();
-                //gardenList = new ArrayList<String>();
 
                 try {
                     for (DataSnapshot gardenSnapshot : dataSnapshot.getChildren()) {
@@ -154,6 +150,7 @@ public class GardenPartner extends Fragment{
 
                         gardenInfoList.add(ginfo);
 
+                        //gardenList.add(gInfoMap.get("gName").toString());
 
                     }
 
@@ -161,42 +158,74 @@ public class GardenPartner extends Fragment{
 
                     lv.setAdapter(adapter);
 
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-                        GardenInfo gInfo = (GardenInfo) parent.getItemAtPosition(position);
+                /*ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                        getActivity(),
+                        android.R.layout.simple_list_item_1,
+                        gardenList);
+                lv.setAdapter(arrayAdapter);*/
 
 
-                        Fragment frag = new GardenOverview();
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("gInfo",gInfo);
-                        frag.setArguments(bundle);
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                        transaction.replace(R.id.content_navigation, frag ); // give your fragment container id in first parameter
-                        transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
-                        transaction.commit();
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    }
-                });
-                }
-                catch (Exception e){
+                            GardenInfo gInfo = (GardenInfo) parent.getItemAtPosition(position);
+
+                            List<String> gmembers = gInfo.getgMembers();
+
+                            String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("gInfo", gInfo);
+
+                            Log.e("ginfo transaction", gmembers.toString());
+
+
+                            if (gInfo.getgOwner().equals(currentUserID)) {
+                                Intent intent = new Intent(getActivity(), KanbanActivity.class);
+                                intent.putExtras(bundle);
+                                startActivity(intent);
+                            } else if (gmembers.contains(currentUserID)) {
+                                int userIDposition = gmembers.indexOf(currentUserID);
+                                if (Boolean.parseBoolean(gmembers.get(userIDposition + 1))) {
+                                    Intent intent = new Intent(getActivity(), KanbanActivity.class);
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                                } else {
+                                    Fragment frag = new GardenOverview();
+                                    frag.setArguments(bundle);
+
+                                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                                    transaction.replace(R.id.content_navigation, frag); // give your fragment container id in first parameter
+                                    transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                                    transaction.commit();
+
+                                }
+                            } else {
+                                Fragment frag = new GardenOverview();
+                                frag.setArguments(bundle);
+
+                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                                transaction.replace(R.id.content_navigation, frag); // give your fragment container id in first parameter
+                                transaction.addToBackStack(null);  // if written, this transaction will be added to backstack
+                                transaction.commit();
+
+                            }
+
+
+                        }
+                    });
+
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
-
             }
         });
-
-
-
     }
 
 

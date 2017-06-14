@@ -5,12 +5,13 @@
     android:id="@+id/activity_garden_overview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pervasive.iu.com.greenthumb.GardenPartner.GardenOverview">
+    tools:context="pervasive.iu.com.greenthumb.GardenPartner.TabLayoutFragment.GardenOverview">
 
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="10dp"
+    android:layout_marginTop="60dp"
     android:paddingRight="10dp">
     <LinearLayout
         android:orientation="vertical"
@@ -109,6 +110,7 @@
                 android:layout_height="195dp"
                 app:srcCompat="@drawable/ic_default_plant"
                 android:id="@+id/gardenOImage"
+                android:transitionName="gardenImageTransition"
                 android:visibility="invisible"
                 android:scaleType="center"/>
 

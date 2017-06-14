@@ -36,7 +36,6 @@ import java.util.Map;
 
 import pervasive.iu.com.greenthumb.Adapter.GardenListViewAdapter;
 import pervasive.iu.com.greenthumb.Adapter.PlantListViewAdapter;
-import pervasive.iu.com.greenthumb.GardenPartner.GardenOverview;
 import pervasive.iu.com.greenthumb.Model.Plants;
 import pervasive.iu.com.greenthumb.R;
 

@@ -1,12 +1,18 @@
 package pervasive.iu.com.greenthumb.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +26,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import pervasive.iu.com.greenthumb.DBHandler.GardenInfo;
+import pervasive.iu.com.greenthumb.GardenPartner.TabLayoutFragment.TaskUpdateActivity;
 import pervasive.iu.com.greenthumb.Model.Plants;
+import pervasive.iu.com.greenthumb.Model.TasksPOJO;
+import pervasive.iu.com.greenthumb.MyPlants.AddPlantActivity;
 import pervasive.iu.com.greenthumb.R;
 
 /**
@@ -31,7 +40,8 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
 
 
     private ArrayList<Plants> dataSet;
-    Context mContext;
+    private Context mContext;
+    private Activity activity;
 
 
     public PlantListViewAdapter(ArrayList<Plants> data, Context context) {
@@ -40,20 +50,48 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
 
         this.dataSet = data;
         this.mContext=context;
+
+        this.activity = (Activity)context;
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) {
+    public void onClick(DialogInterface dialogInterface, int i) {
 
     }
 
 
-    public static class ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public de.hdodenhof.circleimageview.CircleImageView plantImage;
+        public de.hdodenhof.circleimageview.CircleImageView plantImage, plantStat;
         public TextView plantName;
         public TextView plantId;
-        public de.hdodenhof.circleimageview.CircleImageView plantStat;
+        public RelativeLayout plantlistviewparent;
+        private int position = 0;
+
+        public ViewHolder(View convertView){
+            super(convertView);
+
+            plantlistviewparent = (RelativeLayout) convertView.findViewById(R.id.plantlistviewparent);
+            plantName = (TextView) convertView.findViewById(R.id.plName);
+            plantId = (TextView) convertView.findViewById(R.id.plId);
+            plantImage = (de.hdodenhof.circleimageview.CircleImageView ) convertView.findViewById(R.id.plImage);
+            plantStat = (de.hdodenhof.circleimageview.CircleImageView) convertView.findViewById(R.id.plStat);
+
+            plantlistviewparent.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            Plants plantInfo = dataSet.get(position);
+
+            Intent myIntent = new Intent(mContext, AddPlantActivity.class);
+            myIntent.putExtra("plantInfo", plantInfo);
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation(activity, (View)plantImage, "plantImageTransition");
+            mContext.startActivity(myIntent,options.toBundle());
+        }
 
     }
 
@@ -71,14 +109,9 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
 
                 if (convertView == null) {
 
-                    viewHolder = new PlantListViewAdapter.ViewHolder();
                     LayoutInflater inflater = LayoutInflater.from(getContext());
                     convertView = inflater.inflate(R.layout.plant_list_view, parent, false);
-                    viewHolder.plantName = (TextView) convertView.findViewById(R.id.plName);
-                    viewHolder.plantId = (TextView) convertView.findViewById(R.id.plId);
-                    viewHolder.plantImage = (de.hdodenhof.circleimageview.CircleImageView ) convertView.findViewById(R.id.plImage);
-                    viewHolder.plantStat = (de.hdodenhof.circleimageview.CircleImageView) convertView.findViewById(R.id.plStat);
-                    result = convertView;
+                    viewHolder = new PlantListViewAdapter.ViewHolder(convertView);
 
                     convertView.setTag(viewHolder);
                 } else {
@@ -88,6 +121,7 @@ public class PlantListViewAdapter extends ArrayAdapter<Plants> implements Dialog
 
                 HashMap<String, String> values = dataModel.getThresholdValues();
                 boolean isSafe = true;
+                viewHolder.position = position;
                 for(HashMap.Entry<String, String> statEntry : values.entrySet()) {
                     if (statEntry.getKey().equals("sunglight")) {
                         if (Double.parseDouble(statEntry.getValue()) > 50000 || Double.parseDouble(statEntry.getValue()) < 25000) {

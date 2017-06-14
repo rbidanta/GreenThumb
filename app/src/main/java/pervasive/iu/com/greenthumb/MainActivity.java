@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import pervasive.iu.com.greenthumb.GardenPartner.GardenOverview;
 import pervasive.iu.com.greenthumb.Login.LoginActivity;
 import pervasive.iu.com.greenthumb.Login.Profile;
 import pervasive.iu.com.greenthumb.Login.my_profile;

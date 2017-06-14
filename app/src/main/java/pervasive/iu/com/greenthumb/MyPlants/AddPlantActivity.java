@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
@@ -15,22 +16,18 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -39,8 +36,6 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,25 +52,23 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import pervasive.iu.com.greenthumb.Adapter.GardenListViewAdapter;
 import pervasive.iu.com.greenthumb.Adapter.VitalStatViewAdapter;
 import pervasive.iu.com.greenthumb.DBHandler.GardenInfo;
-import pervasive.iu.com.greenthumb.GardenPartner.GardenOverview;
+
 import pervasive.iu.com.greenthumb.Login.LoginActivity;
 import pervasive.iu.com.greenthumb.MainActivity;
+import pervasive.iu.com.greenthumb.Model.Harvest;
 import pervasive.iu.com.greenthumb.Model.Plants;
 import pervasive.iu.com.greenthumb.R;
 
-public class AddPlantActivity extends AppCompatActivity implements View.OnClickListener{
+public class AddPlantActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference dbreference;
@@ -95,21 +88,33 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
     private Plants plantDetails;
     private String plantId;
     private Bitmap bitmap;
+    private TextView res, analyseresult;
     private static final int PICK_IMAGE_REQUEST = 1;
     static final int REQUEST_TAKE_PHOTO = 1;
 
+
+    /*Harvest details*/
+    private String caption;
+    private ArrayList<String> tags;
+    private HashMap<String, String> colors;
+    private ArrayList<String> categories;
+    private Harvest harvest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        tags = new ArrayList<>();
+        colors = new HashMap<>();
+        categories = new ArrayList<>();
         Intent intent = getIntent();
         plantDetails = (Plants) intent.getSerializableExtra("plantInfo");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_plant);
         firebaseAuth = FirebaseAuth.getInstance();
-
-        if(firebaseAuth.getCurrentUser() == null)
-        {
+        harvest = new Harvest();
+        if (firebaseAuth.getCurrentUser() == null) {
             finish();
-            startActivity(new Intent(this,LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
 
         //Hide keyboard
@@ -133,7 +138,9 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         buttonUpdate = (Button) findViewById(R.id.btnUpdatePlant);
         buttonAddImgGallery = (ImageButton) findViewById(R.id.btnAddGalleryImage);
         View v = findViewById(android.R.id.content);
-        if(plantDetails != null){
+
+
+        if (plantDetails != null) {
             buttonSave.setVisibility(View.GONE);
             buttonUpdate.setVisibility(View.VISIBLE);
             bindPlantDetails(plantDetails, v);
@@ -141,10 +148,11 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         buttonSave.setOnClickListener(this);
         buttonUpdate.setOnClickListener(this);
         buttonShowStats.setOnClickListener(this);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
        /* getSupportActionBar().setIcon(R.mipmap.ic_stat);*/
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu
@@ -161,7 +169,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         int id = item.getItemId();
 
         if (id == R.id.btnStats) {
-            if(plantDetails != null) {
+            if (plantDetails != null) {
                 showStats();
             }
             return true;
@@ -172,62 +180,61 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View v) {
 
-        if(v == buttonSave)
-        {
-            if(!validatePlantName()){
+        if (v == buttonSave) {
+            if (!validatePlantName()) {
                 return;
             }
 
-            if(!validateKitNum()){
+            if (!validateKitNum()) {
                 return;
             }
 
-            if(!validateNotTime()){
+            if (!validateNotTime()) {
                 return;
             }
 
-            if(!validatePlantImage()) {
-                Toast.makeText(this,R.string.Err_Plant_Image,Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            savePlant();
-
-            Toast.makeText(this,"Plant information has been saved successfully",Toast.LENGTH_LONG).show();
-
-            finish();
-
-        }else if(v == buttonUpdate){
-            if(!validatePlantName()){
-                return;
-            }
-
-            if(!validateKitNum()){
-                return;
-            }
-
-            if(!validateNotTime()){
-                return;
-            }
-
-            if(!validatePlantImage()) {
-                Toast.makeText(this,R.string.Err_Plant_Image,Toast.LENGTH_LONG).show();
+            if (!validatePlantImage()) {
+                Toast.makeText(this, R.string.Err_Plant_Image, Toast.LENGTH_LONG).show();
                 return;
             }
 
             savePlant();
 
-            Toast.makeText(this,"Plant information has been updated successfully",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Plant information has been saved successfully", Toast.LENGTH_LONG).show();
 
             finish();
-        }else if(v == buttonShowStats){
-            if(plantDetails != null) {
+
+        } else if (v == buttonUpdate) {
+            if (!validatePlantName()) {
+                return;
+            }
+
+            if (!validateKitNum()) {
+                return;
+            }
+
+            if (!validateNotTime()) {
+                return;
+            }
+
+            if (!validatePlantImage()) {
+                Toast.makeText(this, R.string.Err_Plant_Image, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            savePlant();
+
+            Toast.makeText(this, "Plant information has been updated successfully", Toast.LENGTH_LONG).show();
+
+            finish();
+        } else if (v == buttonShowStats) {
+            if (plantDetails != null) {
                 showStats();
             }
         }
     }
 
-    public void bindPlantDetails(Plants plantInfo, View v){
+    public void bindPlantDetails(Plants plantInfo, View v) {
 
         plantId = plantInfo.getPlantId();
         String kitId = plantInfo.getKitId();
@@ -239,9 +246,9 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         editTextPlantName.setText(plantName);
         editTextTime.setText(notificationTime);
         plantImagesRef = storage.getReference(plantImagePath);
-        if(location.trim().equals("Indoor")){
+        if (location.trim().equals("Indoor")) {
             radioBtnIn.setChecked(true);
-        }else{
+        } else {
             radioBtnOut.setChecked(true);
         }
 
@@ -253,19 +260,19 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
                 .into(plantImg);
     }
 
-    public void savePlant(){
+    public void savePlant() {
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         DatabaseReference def = dbreference.child(user.getUid()).child("Plants");
 
-        if(plantId == null){
+        if (plantId == null) {
             plantId = def.push().getKey();
         }
         String userId = user.getUid();
         String kitId = editTextKitId.getText().toString().trim();
         String plantName = editTextPlantName.getText().toString().trim();
         String notificationTime = editTextTime.getText().toString().trim();
-        String plantImagePath = userId+"/"+plantId+"/"+plantName.replaceAll(" ","")+".jpg";
+        String plantImagePath = userId + "/" + plantId + "/" + plantName.replaceAll(" ", "") + ".jpg";
 
         // get selected radio button from radioGroup
         int selectedId = radioGroupLoc.getCheckedRadioButtonId();
@@ -274,25 +281,25 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 
         radioBtnSelected = (RadioButton) findViewById(selectedId);
 
-        if(radioBtnSelected == radioBtnIn){
+        if (radioBtnSelected == radioBtnIn) {
             location = "Indoor";
-        }else{
+        } else {
             location = "Outdoor";
         }
 
         Date lastModified = new Date();
 
-        plantImagesRef = plantStorageRef.child(userId+"/"+plantId+"/"+plantName.replaceAll(" ","")+".jpg");
+        plantImagesRef = plantStorageRef.child(userId + "/" + plantId + "/" + plantName.replaceAll(" ", "") + ".jpg");
         HashMap<String, String> val = new HashMap<String, String>();
         val.put("sunlight", "35000");
         val.put("moisture", "37");
-        val.put("temperature","70");
+        val.put("temperature", "70");
         val.put("ph", "1.5");
 
         HashMap<String, String> thresholdValues = val;
 
         Plants plant = new Plants(plantId, kitId, userId, plantName, plantImagesRef.getPath(), location, notificationTime, lastModified, thresholdValues);
-
+//System.out.println("Plant data "+plant.toString());
         def.child(plantId).setValue(plant);
         putImagetoFireBase();
     }
@@ -328,7 +335,6 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
     private boolean validatePlantName() {
         if (editTextPlantName.getText().toString().trim().isEmpty()) {
             inputLayoutPlantName.setError(getString(R.string.Err_Plant_Name));
-            requestFocus(editTextPlantName);
             return false;
         } else {
             inputLayoutPlantName.setErrorEnabled(false);
@@ -339,7 +345,6 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
     private boolean validateKitNum() {
         if (editTextKitId.getText().toString().trim().isEmpty()) {
             inputLayoutKitNum.setError(getString(R.string.Err_Kit_Num));
-            requestFocus(editTextKitId);
             return false;
         } else {
             inputLayoutKitNum.setErrorEnabled(false);
@@ -351,7 +356,6 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
     private boolean validateNotTime() {
         if (editTextTime.getText().toString().trim().isEmpty()) {
             inputLayoutNotTime.setError(getString(R.string.Err_Not_Time));
-            requestFocus(editTextTime);
             return false;
         } else {
             inputLayoutNotTime.setErrorEnabled(false);
@@ -370,7 +374,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    public void onClickCamera(View v){
+    public void onClickCamera(View v) {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -396,7 +400,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    public void imagePicker(View v){
+    public void imagePicker(View v) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -422,7 +426,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
 		/* Figure out which way needs to be reduced less */
         int scaleFactor = 1;
         if ((targetW > 0) || (targetH > 0)) {
-            scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+            scaleFactor = Math.min(photoW / targetW, photoH / targetH);
         }
 
 		/* Set bitmap options to scale the image decode target */
@@ -451,7 +455,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         return image;
     }
 
-    private void putImagetoFireBase(){
+    private void putImagetoFireBase() {
         plantImg.setDrawingCacheEnabled(true);
         plantImg.buildDrawingCache();
         //Bitmap bitmap = plantImg.getDrawingCache();
@@ -484,6 +488,7 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void galleryAddPic() {
+
         Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
         File f = new File(mCurrentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
@@ -501,20 +506,14 @@ public class AddPlantActivity extends AppCompatActivity implements View.OnClickL
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 
             Uri uri = data.getData();
-
+            plantImageUri = uri;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                 plantImg.setImageBitmap(bitmap);
-                plantImageUri = uri;
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 }

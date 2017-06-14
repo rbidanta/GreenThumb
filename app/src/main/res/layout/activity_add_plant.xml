@@ -40,6 +40,7 @@
                 app:srcCompat="@mipmap/ic_plant_icon"
                 android:scaleType="center"
                 android:id="@+id/imgViewPlant"
+                android:transitionName="plantImageTransition"
                 android:layout_weight="1"/>
         </LinearLayout>
 
@@ -133,6 +134,7 @@
                 android:layout_below="@+id/txtNotiTime"
                 android:layout_alignStart="@+id/txtNotiTime"
                 android:layout_marginTop="14dp">
+
                 <RadioButton
                     android:text="Outdoor"
                     android:layout_width="144dp"
@@ -150,6 +152,17 @@
                     android:layout_above="@+id/rbOutdoor"
                     android:layout_toEndOf="@+id/rgLocation" />
             </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/result"
+            android:layout_weight="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/analyseresult"
+            android:layout_weight="1" />
         <Button
             android:text="Save"
             android:id="@+id/btnSavePlant"

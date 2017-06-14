@@ -48,7 +48,6 @@ public class GardenOverview extends Fragment {
 
     private EditText gName,gAddress,gOwnerName,gContactNumber;
     private Button reqMembership,updateInfo,viewRequests;
-   // private ImageButton
     private ImageView gardenImage;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference dbreference;
@@ -130,7 +129,6 @@ public class GardenOverview extends Fragment {
                 .into(gardenImage);
 
         gardenImage.setVisibility(View.VISIBLE);
-        // gardenImage.setVisibility(View.INVISIBLE);
 
         // For fetching the name of Owner
 
@@ -357,28 +355,8 @@ public class GardenOverview extends Fragment {
             }
         });
 
-        /*cancelMembership.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                cancelMembership(gInfo.getgId(),currentUser);
-                reqMembership.setVisibility(View.VISIBLE);
-                cancelMembership.setVisibility(View.INVISIBLE);
-
-                Toast.makeText(getActivity(),"Membership Request has Been Cancelled",Toast.LENGTH_LONG).show();
-
-            }
-        });*/
-
         return view;
     }
-
-
-
-
-
-
-
 
     @Override
     public void onStart() {
@@ -391,9 +369,6 @@ public class GardenOverview extends Fragment {
        DatabaseReference gardenReference = FirebaseDatabase.getInstance().getReference("gardens");
 
        if(isDataModified()) {
-           /*gardenReference.child(gardenId).child("gName").setValue(gName.getText());
-           gardenReference.child(gardenId).child("gAddress").setValue(gAddress.getText());
-           gardenReference.child(gardenId).child("gOwnerPhone").setValue(gContactNumber.getText());*/
            Toast.makeText(getActivity(),"Information Updated Successfully!",Toast.LENGTH_LONG).show();
        }else {
            Toast.makeText(getActivity(),"Please provide valid information!",Toast.LENGTH_LONG).show();

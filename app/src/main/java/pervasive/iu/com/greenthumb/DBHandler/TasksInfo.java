@@ -8,19 +8,12 @@ import java.io.Serializable;
  */
 
 public class TasksInfo  implements Serializable{
-
-
-
-
-    //public String gName;
     public String taskId;
 
     public String taskname;
     public long deadline;
     public String assignedto;
     public String completedby;
-
-
 
     public TasksInfo(){
 

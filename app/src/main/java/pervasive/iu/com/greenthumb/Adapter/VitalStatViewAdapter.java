@@ -103,7 +103,7 @@ public class VitalStatViewAdapter extends BaseAdapter{
         viewHolder.textViewStatName.setTextColor(Color.parseColor("#327832"));
         viewHolder.textViewStatVal.setTextColor(Color.parseColor("#327832"));
 
-        if (viewHolder.textViewStatName.getText().equals("sunglight")) {
+        if (viewHolder.textViewStatName.getText().equals("sunlight")) {
             if (Double.parseDouble(viewHolder.textViewStatVal.getText().toString()) > 50000
                     || Double.parseDouble(viewHolder.textViewStatVal.getText().toString()) < 25000) {
                 viewHolder.textViewStatVal.setTextColor(Color.parseColor("#FF0000"));
